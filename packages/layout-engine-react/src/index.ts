@@ -1,4 +1,4 @@
-import * as H from "layout-engine"
+import * as H from "@damarkuncoro/layout-engine"
 import { renderNodeToReact } from "./renderReact.js"
 
 export type {
@@ -12,12 +12,12 @@ export type {
   GridProps,
   ResponsiveValue,
   BreakpointKey
-} from "layout-engine"
+} from "@damarkuncoro/layout-engine"
 
 export {
   resolveResponsive,
   breakpoints
-} from "layout-engine"
+} from "@damarkuncoro/layout-engine"
 
 export function Box(props: H.LayoutProps & { children?: any }) {
   const node = H.Box(props)

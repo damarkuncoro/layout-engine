@@ -4,12 +4,12 @@
   "description": "React adapter for layout-engine (headless → React components)",
   "license": "MIT",
   "type": "module",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
   "sideEffects": false,
   "files": [
-    "dist"
+    "lib"
   ],
   "keywords": [
     "layout",
@@ -23,12 +23,17 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    }
+      "types": "./lib/esm/index.d.ts",
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "postbuild:cjs": "node scripts/ensure-cjs.js",
+    "build": "npm run build:esm && npm run build:cjs && npm run postbuild:cjs",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "peerDependencies": {
@@ -40,6 +45,8 @@
   },
   "devDependencies": {
     "typescript": "^5.4.0",
-    "@damarkuncoro/layout-engine": "file:../layout-engine"
+    "@damarkuncoro/layout-engine": "file:../layout-engine",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0"
   }
 }

@@ -14,6 +14,20 @@ npm install @damarkuncoro/layout-engine
 - Structures: SidebarLayout.
 - Sistem responsive berbasis breakpoints (sm, md, lg, xl, 2xl).
 
+## Import ESM & CJS
+
+- ESM (direkomendasikan):
+
+```js
+import { Box, Grid, renderToString } from "@damarkuncoro/layout-engine"
+```
+
+- CJS:
+
+```js
+const { Box, Grid, renderToString } = require("@damarkuncoro/layout-engine")
+```
+
 ## Penggunaan Dasar
 
 Render headless ke HTML:
@@ -34,12 +48,12 @@ console.log(renderToString(page))
 Responsive utility:
 
 ```js
-import { resolveResponsive } from "layout-engine"
+import { resolveResponsive } from "@damarkuncoro/layout-engine"
 const gap = resolveResponsive({ base: 8, md: 16, xl: 24 }, 768) // 16
 ```
 
 ## TypeScript
-- ESM-only, deklarasi tipe tersedia pada `dist/index.d.ts`.
+- Deklarasi tipe tersedia pada `lib/esm/index.d.ts`.
 
 ## Lisensi
 MIT
