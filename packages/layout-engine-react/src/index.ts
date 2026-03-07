@@ -47,21 +47,55 @@ export {
   getSystemColorScheme
 } from "@damarkuncoro/layout-engine"
 
-// Presets
-export {
-  BlogPostPreset,
-  BlogListPreset,
-  ProductGridPreset,
-  ProductDetailPreset,
-  CartPreset,
-  StatsGridPreset,
-  DataTablePreset,
-  DashboardWidgetPreset,
-  SettingsPagePreset,
-  SettingsSectionPreset,
-  DocsPagePreset,
-  ProfilePagePreset
-} from "@damarkuncoro/layout-engine"
+// Preset wrappers (convert headless nodes to React elements)
+export function StatsGridPreset(props: H.StatsGridPresetProps) {
+  const node = (H as any).StatsGridPreset(props as any)
+  return renderNodeToReact(node)
+}
+export function ProductGridPreset(props: H.ProductGridPresetProps) {
+  const node = (H as any).ProductGridPreset(props as any)
+  return renderNodeToReact(node)
+}
+export function ProductDetailPreset(props: H.ProductDetailPresetProps) {
+  const node = (H as any).ProductDetailPreset(props as any)
+  return renderNodeToReact(node)
+}
+export function BlogPostPreset(props: H.BlogPostPresetProps) {
+  const node = (H as any).BlogPostPreset(props as any)
+  return renderNodeToReact(node)
+}
+export function BlogListPreset(props: H.BlogListPresetProps) {
+  const node = (H as any).BlogListPreset(props as any)
+  return renderNodeToReact(node)
+}
+export function CartPreset(props: H.CartPresetProps) {
+  const node = (H as any).CartPreset(props as any)
+  return renderNodeToReact(node)
+}
+export function DataTablePreset(props: H.DataTablePresetProps) {
+  const node = (H as any).DataTablePreset(props as any)
+  return renderNodeToReact(node)
+}
+export function DashboardWidgetPreset(props: H.DashboardWidgetPresetProps) {
+  const node = (H as any).DashboardWidgetPreset(props as any)
+  return renderNodeToReact(node)
+}
+export function SettingsPagePreset(props: H.SettingsPagePresetProps) {
+  const node = (H as any).SettingsPagePreset(props as any)
+  return renderNodeToReact(node)
+}
+export function SettingsSectionPreset(props: H.SettingsSectionPresetProps) {
+  const node = (H as any).SettingsSectionPreset(props as any)
+  return renderNodeToReact(node)
+}
+export function DocsPagePreset(props: H.DocsPagePresetProps) {
+  const node = (H as any).DocsPagePreset(props as any)
+  return renderNodeToReact(node)
+}
+export function ProfilePagePreset(props: H.ProfilePagePresetProps) {
+  const node = (H as any).ProfilePagePreset(props as any)
+  return renderNodeToReact(node)
+}
 
 export function Box(props: H.LayoutProps & { children?: any }) {
   const node = H.Box(props)

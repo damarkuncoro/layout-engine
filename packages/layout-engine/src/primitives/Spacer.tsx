@@ -1,24 +1,26 @@
 import { normalizeUnit } from "../core/styleResolver.js"
-import type { CSSLength } from "../system/types.js"
-
-export interface SpacerProps {
-  size: CSSLength
+import type { LayoutProps, CSSLength } from "../system/types.js"
+export interface SpacerProps extends LayoutProps {
+  size?: CSSLength
+  axis?: "x" | "y"
 }
-
-/**
- * Spacer - memberikan jarak kosong yang bisa di-resize
- * Berguna untuk spacing yang dynamic antar komponen
- */
-export function Spacer({ size = 4 }: SpacerProps) {
+export function Spacer({
+  size = 8,
+  axis = "y",
+  style,
+  ...rest
+}: SpacerProps & { children?: any }) {
+  const resolved: Record<string, any> = {
+    width: axis === "x" ? normalizeUnit(size) : normalizeUnit(rest.width) ?? "100%",
+    height: axis === "y" ? normalizeUnit(size) : normalizeUnit(rest.height) ?? "100%",
+    display: "block",
+    ...style
+  }
   return {
     type: "div",
     props: {
-      style: {
-        width: normalizeUnit(size),
-        height: normalizeUnit(size),
-        flexShrink: 0,
-        flexGrow: 0
-      }
+      style: resolved,
+      ...rest
     }
   }
 }

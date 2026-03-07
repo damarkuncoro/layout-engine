@@ -1,5 +1,5 @@
 import React from "react"
-import { SidebarLayout, SidebarLayoutAutoVW, HeaderContentFooter, StatsGridPreset, ProductGridPreset, ProductDetailPreset, Stack, Grid, Flex, Box, Container, themeLight, themeDark } from "@damarkuncoro/layout-engine-react"
+import { SidebarLayout, SidebarLayoutAutoVW, HeaderContentFooter, StatsGridPreset, ProductGridPreset, ProductDetailPreset, Stack, Grid, Flex, Box, Container, Center, Spacer, themeLight, themeDark } from "@damarkuncoro/layout-engine-react"
 import { resolveResponsive } from "@damarkuncoro/layout-engine"
 import { Routes, Route, Link, useNavigate, useParams, useLocation } from "react-router-dom"
 
@@ -139,6 +139,7 @@ export default function App() {
       { onClick: () => setView("flex") },
       "Flex"
     ),
+    React.createElement(Spacer, { axis: "x", size: 24 }),
     view === "dashboard" &&
       React.createElement(
         "button",
@@ -435,9 +436,9 @@ function FlexDemo() {
     React.createElement(
       Flex,
       { direction, gap },
-      React.createElement("div", { key: "f1", style: { border: "1px solid #ddd", padding: 12 } }, "Item 1"),
-      React.createElement("div", { key: "f2", style: { border: "1px solid #ddd", padding: 12 } }, "Item 2"),
-      React.createElement("div", { key: "f3", style: { border: "1px solid #ddd", padding: 12 } }, "Item 3")
+      React.createElement(Center, { key: "f1", style: { border: "1px solid #ddd", width: 80, height: 60 } }, "Item 1"),
+      React.createElement(Center, { key: "f2", style: { border: "1px solid #ddd", width: 80, height: 60 } }, "Item 2"),
+      React.createElement(Center, { key: "f3", style: { border: "1px solid #ddd", width: 80, height: 60 } }, "Item 3")
     )
   )
 }
