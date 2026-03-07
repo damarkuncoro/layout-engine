@@ -18,3 +18,26 @@ export interface DashboardLayoutContract {
   sidebar: NodeLike
   children: NodeLike
 }
+
+export interface SplitLayoutContract {
+  left: NodeLike
+  right: NodeLike
+  leftWidth?: CSSLength | ResponsiveValue<CSSLength>
+  splitRatio?: string
+  viewportWidth?: number
+}
+
+export interface AuthLayoutContract {
+  children: NodeLike
+  logo?: NodeLike
+  subtitle?: string
+}
+
+export interface LandingLayoutContract {
+  header?: NodeLike
+  hero?: NodeLike
+  features?: NodeLike
+  pricing?: NodeLike
+  footer?: NodeLike
+  children?: NodeLike
+}
