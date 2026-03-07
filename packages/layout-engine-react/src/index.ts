@@ -88,6 +88,16 @@ export function Container(props: H.ContainerProps & { children?: any }) {
   return renderNodeToReact(node)
 }
 
+export function Spacer(props: { size?: any }) {
+  const node = H.Spacer(props)
+  return renderNodeToReact(node)
+}
+
+export function Center(props: any) {
+  const node = H.Center(props)
+  return renderNodeToReact(node)
+}
+
 export function SidebarLayout(props: any) {
   const node = H.SidebarLayout(props)
   return renderNodeToReact(node)
