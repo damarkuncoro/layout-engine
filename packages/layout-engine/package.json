@@ -1,6 +1,6 @@
 {
   "name": "@damarkuncoro/layout-engine",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Minimal layout engine primitives and resolvers",
   "license": "MIT",
   "type": "module",
@@ -28,6 +28,9 @@
       "require": "./lib/cjs/index.js"
     },
     "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build:esm": "tsc -p tsconfig.esm.json",
