@@ -1,12 +1,12 @@
 export * from "./core/styleResolver.js";
 export * from "./core/spacingSystem.js";
-export * from "./core/responsiveSystem.js";
+export { resolveResponsive, breakpoints, type BreakpointKey } from "./core/responsiveSystem.js";
 export * from "./core/render.js";
 export * from "./system/types.js";
 export * from "./system/contracts.js";
-export * from "./primitives/Box.js";
-export * from "./primitives/Flex.js";
-export * from "./primitives/Stack.js";
-export * from "./primitives/Grid.js";
-export * from "./structures/SidebarLayout.js";
+export { Box, type LayoutProps } from "./primitives/Box.js";
+export { Flex, type FlexProps } from "./primitives/Flex.js";
+export { Stack, type StackProps } from "./primitives/Stack.js";
+export { Grid, type GridProps } from "./primitives/Grid.js";
+export { SidebarLayout, type ResponsiveSidebarLayoutProps } from "./structures/SidebarLayout.js";
 export * from "./patterns/DashboardLayout.js";

@@ -25,9 +25,10 @@ const renderChild = (child) => {
  */
 export const renderToString = (node) => {
     const { type, props } = node;
-    const { children, style, ...rest } = props || {};
+    const { children, style, className, ...rest } = props || {};
     const styleStr = styleToString(style);
-    const attr = (styleStr ? ` style="${styleStr}"` : "") +
+    const attr = (className ? ` class="${className}"` : "") +
+        (styleStr ? ` style="${styleStr}"` : "") +
         Object.entries(rest)
             .map(([k, v]) => {
             if (v === undefined || v === null || typeof v === "object")

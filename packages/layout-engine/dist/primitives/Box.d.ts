@@ -1,4 +1,5 @@
 import type { LayoutProps } from "../system/types.js";
+export { type LayoutProps };
 /**
  * Komponen blok dasar yang memetakan LayoutProps → inline style.
  * Gunakan untuk membangun primitive lainnya.

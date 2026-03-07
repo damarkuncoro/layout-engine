@@ -53,6 +53,7 @@ export default function App() {
   const [view, setView] = React.useState("dashboard")
   const [collapsed, setCollapsed] = React.useState(false)
   const [dark, setDark] = React.useState(false)
+  const [outline, setOutline] = React.useState(false)
   const navigate = useNavigate()
   const [width, setWidth] = React.useState(
     typeof window !== "undefined" ? window.innerWidth : 1024
@@ -127,6 +128,11 @@ export default function App() {
       "button",
       { onClick: () => setDark((d) => !d) },
       dark ? "Light Mode" : "Dark Mode"
+    ),
+    React.createElement(
+      "button",
+      { onClick: () => setOutline((o) => !o) },
+      outline ? "Outline Off" : "Outline On"
     ),
     React.createElement(
       "span",
@@ -315,11 +321,15 @@ export default function App() {
         )
   const bg = dark ? "#0f172a" : "#fff"
   const fg = dark ? "#e2e8f0" : "#111"
+  const outlineCss = outline
+    ? `.preview *{outline:1px dashed ${dark ? "#334155" : "#94a3b8"}}`
+    : ""
   return React.createElement(
     "div",
     { style: { background: bg, color: fg, minHeight: "100vh" } },
     toolbar,
-    content
+    React.createElement("style", null, outlineCss),
+    React.createElement("div", { className: "preview" }, content)
   )
 }
 

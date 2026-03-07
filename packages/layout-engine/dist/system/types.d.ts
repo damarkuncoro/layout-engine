@@ -3,6 +3,17 @@
  */
 export type CSSLength = number | string;
 /**
+ * Responsive value that adapts based on viewport width.
+ */
+export type ResponsiveValue<T> = T | {
+    base?: T;
+    sm?: T;
+    md?: T;
+    lg?: T;
+    xl?: T;
+    "2xl"?: T;
+} | T[];
+/**
  * Props dasar untuk layout primitives.
  * Hanya properti yang dipetakan ke style inline.
  */

@@ -26,9 +26,10 @@
     "react-dom": "^18.0.0"
   },
   "dependencies": {
-    "layout-engine": "file:../layout-engine"
+    "layout-engine": "^0.1.0"
   },
   "devDependencies": {
-    "typescript": "^5.4.0"
+    "typescript": "^5.4.0",
+    "layout-engine": "file:../layout-engine"
   }
 }
