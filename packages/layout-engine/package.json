@@ -1,0 +1,29 @@
+{
+  "name": "layout-engine",
+  "version": "0.1.0",
+  "description": "Minimal layout engine primitives and resolvers",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node dist/tests/basic.test.js && node dist/tests/structures.test.js"
+  },
+  "peerDependencies": {},
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

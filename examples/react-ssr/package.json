@@ -1,0 +1,14 @@
+{
+  "name": "layout-engine-examples-ssr",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "layout-engine-react": "file:../../packages/layout-engine-react"
+  }
+}
