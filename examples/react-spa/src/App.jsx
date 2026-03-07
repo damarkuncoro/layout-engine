@@ -1,5 +1,5 @@
 import React from "react"
-import { SidebarLayout, Stack, Grid, Flex, Box, Container } from "@damarkuncoro/layout-engine-react"
+import { SidebarLayout, SidebarLayoutAutoVW, HeaderContentFooter, Stack, Grid, Flex, Box, Container } from "@damarkuncoro/layout-engine-react"
 import { resolveResponsive } from "@damarkuncoro/layout-engine"
 import { Routes, Route, Link, useNavigate, useParams, useLocation } from "react-router-dom"
 
@@ -102,6 +102,11 @@ export default function App() {
       "button",
       { onClick: () => setView("areas-resp") },
       "Areas Resp"
+    ),
+    React.createElement(
+      "button",
+      { onClick: () => setView("hcf") },
+      "HCF"
     ),
     React.createElement(
       "button",
@@ -218,26 +223,17 @@ export default function App() {
     const cols = effectiveWidth < 768 ? "1fr" : "200px 1fr"
     const rows = effectiveWidth < 768 ? "auto auto 1fr" : "auto 1fr"
     return React.createElement(
-      "div",
-      { style: { padding: 12 } },
-      React.createElement(
-        Grid,
-        {
-          columns: cols,
-          rows,
-          gap: 8,
-          style: { gridTemplateAreas: areas }
-        },
+      Container,
+      null,
+      React.createElement(Grid, { columns: cols, rows, gap: 8, style: { gridTemplateAreas: areas } },
         React.createElement("div", { key: "ar-hd", style: { gridArea: "hd", padding: 12, border: "1px solid #ddd" } }, "Header"),
         React.createElement("div", { key: "ar-sd", style: { gridArea: "sd", padding: 12, border: "1px solid #ddd" } }, "Sidebar"),
-        React.createElement("div", { key: "ar-ct", style: { gridArea: "ct", padding: 12, border: "1px solid #ddd" } }, "Content")
-      )
+        React.createElement("div", { key: "ar-ct", style: { gridArea: "ct", padding: 12, border: "1px solid #ddd" } }, "Content"))
     )
   }
   const ResponsiveSidebarDemo = () => {
     const [override, setOverride] = React.useState(null)
-    const swBase = resolveResponsive({ base: 120, md: 200, xl: 280 }, effectiveWidth)
-    const sw = override ?? swBase
+    const sw = override ?? { base: 120, md: 200, xl: 280 }
     const sidebar = React.createElement("div", { style: { padding: 12 } }, `Sidebar ${sw}px`)
     const content = React.createElement(
       Stack,
@@ -251,7 +247,7 @@ export default function App() {
       React.createElement(
         "div",
         { style: { marginBottom: 8, color: "#555" } },
-        `Width: ${effectiveWidth}px → sidebarWidth: ${sw}px`
+        `sidebarWidth: ${typeof sw === "number" ? sw + "px" : "{ base:120, md:200, xl:280 }"}`
       ),
       React.createElement(
         "div",
@@ -260,7 +256,7 @@ export default function App() {
           type: "range",
           min: 80,
           max: 320,
-          value: sw,
+          value: typeof sw === "number" ? sw : 200,
           onChange: (e) => setOverride(+e.target.value)
         }),
         React.createElement(
@@ -269,7 +265,7 @@ export default function App() {
           "reset"
         )
       ),
-      React.createElement(SidebarLayout, { sidebar, children: content, sidebarWidth: sw })
+      React.createElement(SidebarLayoutAutoVW, { sidebar, children: content, sidebarWidth: sw })
     )
   }
   const BoxResponsiveDemo = () => {
@@ -307,6 +303,21 @@ export default function App() {
       ? React.createElement(ResponsiveSidebarDemo)
       : view === "box"
       ? React.createElement(BoxResponsiveDemo)
+      : view === "hcf"
+      ? React.createElement(
+          Container,
+          null,
+          React.createElement(HeaderContentFooter, {
+            header: React.createElement("div", { style: { padding: 12, borderBottom: "1px solid #e5e5e5" } }, "Header"),
+            content: React.createElement(
+              Stack,
+              { gap: 12 },
+              React.createElement("div", { key: "hc1", style: { padding: 12, border: "1px solid #ddd" } }, "Content A"),
+              React.createElement("div", { key: "hc2", style: { padding: 12, border: "1px solid #ddd" } }, "Content B")
+            ),
+            footer: React.createElement("div", { style: { padding: 12, borderTop: "1px solid #e5e5e5" } }, "Footer")
+          })
+        )
       : view === "router"
       ? React.createElement(RouterDemo)
       : React.createElement(
@@ -431,6 +442,6 @@ function RouterDemo() {
     { style: { height: "calc(100vh - 56px)", display: "flex", flexDirection: "column" } },
     header,
     React.createElement(Breadcrumbs),
-    React.createElement(SidebarLayout, { sidebar, children: routes, sidebarWidth: 200 })
+    React.createElement(SidebarLayoutAutoVW, { sidebar, children: routes, sidebarWidth: { base: 140, md: 180, lg: 220 } })
   )
 }

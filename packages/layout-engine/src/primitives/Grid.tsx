@@ -1,10 +1,12 @@
-import type { CSSLength, LayoutProps } from "../system/types.js"
+import type { CSSLength, LayoutProps, ResponsiveValue } from "../system/types.js"
 import { normalizeUnit } from "../core/styleResolver.js"
+import { resolveResponsive } from "../core/responsiveSystem.js"
 
 export interface GridProps extends LayoutProps {
-  columns?: number | string
+  columns?: number | string | ResponsiveValue<number>
   rows?: number | string
-  gap?: CSSLength
+  gap?: CSSLength | ResponsiveValue<CSSLength>
+  viewportWidth?: number
 }
 
 const toTemplate = (v?: number | string) => {
@@ -23,17 +25,26 @@ export function Grid({
   height,
   display,
   style,
+  viewportWidth = 1024,
   ...rest
 }: GridProps & { children?: any }) {
+  const resolvedColumns = typeof columns === "object"
+    ? resolveResponsive(columns as ResponsiveValue<number>, viewportWidth)
+    : toTemplate(columns)
+  
+  const resolvedGap = typeof gap === "object"
+    ? normalizeUnit(resolveResponsive(gap as ResponsiveValue<CSSLength>, viewportWidth))
+    : normalizeUnit(gap as any)
+
   const resolved: Record<string, any> = {
     padding: normalizeUnit(padding),
     margin: normalizeUnit(margin),
     width: normalizeUnit(width),
     height: normalizeUnit(height),
     display: display ?? "grid",
-    gridTemplateColumns: toTemplate(columns),
+    gridTemplateColumns: resolvedColumns,
     gridTemplateRows: toTemplate(rows),
-    gap: normalizeUnit(gap as any),
+    gap: resolvedGap,
     ...style
   }
   return {

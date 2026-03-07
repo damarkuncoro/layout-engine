@@ -9,20 +9,58 @@ export type {
   SidebarLayoutContract,
   HeaderLayoutContract,
   DashboardLayoutContract,
-  SplitLayoutProps,
-  AuthLayoutProps,
-  LandingLayoutProps,
+  SplitLayoutContract,
+  AuthLayoutContract,
+  LandingLayoutContract,
   FlexProps,
   StackProps,
   GridProps,
   ContainerProps,
   ResponsiveValue,
-  BreakpointKey
+  BreakpointKey,
+  Theme,
+  ColorScheme
+} from "@damarkuncoro/layout-engine"
+
+export type {
+  BlogPostPresetProps,
+  BlogListPresetProps,
+  ProductGridPresetProps,
+  ProductDetailPresetProps,
+  CartPresetProps,
+  StatsGridPresetProps,
+  DataTablePresetProps,
+  DashboardWidgetPresetProps,
+  SettingsPagePresetProps,
+  SettingsSectionPresetProps,
+  DocsPagePresetProps,
+  ProfilePagePresetProps
 } from "@damarkuncoro/layout-engine"
 
 export {
   resolveResponsive,
-  breakpoints
+  breakpoints,
+  theme,
+  themeLight,
+  themeDark,
+  getTheme,
+  getSystemColorScheme
+} from "@damarkuncoro/layout-engine"
+
+// Presets
+export {
+  BlogPostPreset,
+  BlogListPreset,
+  ProductGridPreset,
+  ProductDetailPreset,
+  CartPreset,
+  StatsGridPreset,
+  DataTablePreset,
+  DashboardWidgetPreset,
+  SettingsPagePreset,
+  SettingsSectionPreset,
+  DocsPagePreset,
+  ProfilePagePreset
 } from "@damarkuncoro/layout-engine"
 
 export function Box(props: H.LayoutProps & { children?: any }) {
@@ -66,7 +104,7 @@ export function HeaderLayout(props: H.HeaderLayoutContract) {
   return renderNodeToReact(node)
 }
 
-export function SplitLayout(props: H.SplitLayoutProps) {
+export function SplitLayout(props: H.SplitLayoutContract) {
   const vw = useViewport()
   const node = H.SplitLayout({ viewportWidth: props?.viewportWidth ?? vw, ...props })
   return renderNodeToReact(node)
@@ -77,13 +115,18 @@ export function DashboardLayout(props: H.DashboardLayoutContract) {
   return renderNodeToReact(node)
 }
 
-export function AuthLayout(props: H.AuthLayoutProps) {
+export function AuthLayout(props: H.AuthLayoutContract) {
   const node = H.AuthLayout(props)
   return renderNodeToReact(node)
 }
 
-export function LandingLayout(props: H.LandingLayoutProps) {
+export function LandingLayout(props: H.LandingLayoutContract) {
   const node = H.LandingLayout(props)
+  return renderNodeToReact(node)
+}
+
+export function HeaderContentFooter(props: { header: any; content: any; footer: any }) {
+  const node = (H as any).HeaderContentFooter(props as any)
   return renderNodeToReact(node)
 }
 
