@@ -1,13 +1,13 @@
 import React from "react"
 import { renderToString } from "react-dom/server"
-import { SidebarLayout, Stack, Grid, Box } from "layout-engine-react"
+import { SidebarLayout, Stack, Grid, Box } from "@damarkuncoro/layout-engine-react"
 import {
   renderToString as renderHeadlessToString,
   SidebarLayout as HSidebarLayout,
   Stack as HStack,
   Box as HBox,
   Grid as HGrid
-} from "layout-engine"
+} from "@damarkuncoro/layout-engine"
 
 function Page({ viewportWidth = 1024 }) {
   const sidebar = React.createElement("div", null, "Sidebar")

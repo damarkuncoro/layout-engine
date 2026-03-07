@@ -51,6 +51,11 @@ export function Container(props: H.ContainerProps & { children?: any }) {
 }
 
 export function SidebarLayout(props: any) {
+  const node = H.SidebarLayout(props)
+  return renderNodeToReact(node)
+}
+
+export function SidebarLayoutAutoVW(props: any) {
   const vw = useViewport()
   const node = H.SidebarLayout({ viewportWidth: props?.viewportWidth ?? vw, ...props })
   return renderNodeToReact(node)

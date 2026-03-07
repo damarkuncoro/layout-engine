@@ -11,8 +11,8 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "layout-engine-react": "file:../../packages/layout-engine-react",
-    "layout-engine": "file:../../packages/layout-engine",
+    "@damarkuncoro/layout-engine-react": "file:../../packages/layout-engine-react",
+    "@damarkuncoro/layout-engine": "file:../../packages/layout-engine",
     "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
