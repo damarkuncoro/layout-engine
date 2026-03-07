@@ -9,29 +9,20 @@ export type {
   SidebarLayoutContract,
   HeaderLayoutContract,
   DashboardLayoutContract,
-  SplitLayoutContract,
-  AuthLayoutContract,
-  LandingLayoutContract,
+  SplitLayoutProps,
+  AuthLayoutProps,
+  LandingLayoutProps,
   FlexProps,
   StackProps,
   GridProps,
   ContainerProps,
   ResponsiveValue,
-  BreakpointKey,
-  Theme,
-  ThemeColors,
-  ThemeTypography,
-  ColorScheme
+  BreakpointKey
 } from "@damarkuncoro/layout-engine"
 
 export {
   resolveResponsive,
-  breakpoints,
-  theme,
-  themeLight,
-  themeDark,
-  getTheme,
-  getSystemColorScheme
+  breakpoints
 } from "@damarkuncoro/layout-engine"
 
 export function Box(props: H.LayoutProps & { children?: any }) {
@@ -70,7 +61,7 @@ export function HeaderLayout(props: H.HeaderLayoutContract) {
   return renderNodeToReact(node)
 }
 
-export function SplitLayout(props: H.SplitLayoutContract) {
+export function SplitLayout(props: H.SplitLayoutProps) {
   const vw = useViewport()
   const node = H.SplitLayout({ viewportWidth: props?.viewportWidth ?? vw, ...props })
   return renderNodeToReact(node)
@@ -81,12 +72,12 @@ export function DashboardLayout(props: H.DashboardLayoutContract) {
   return renderNodeToReact(node)
 }
 
-export function AuthLayout(props: H.AuthLayoutContract) {
+export function AuthLayout(props: H.AuthLayoutProps) {
   const node = H.AuthLayout(props)
   return renderNodeToReact(node)
 }
 
-export function LandingLayout(props: H.LandingLayoutContract) {
+export function LandingLayout(props: H.LandingLayoutProps) {
   const node = H.LandingLayout(props)
   return renderNodeToReact(node)
 }
