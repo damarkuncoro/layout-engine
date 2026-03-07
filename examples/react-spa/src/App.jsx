@@ -57,6 +57,8 @@ export default function App() {
   const [width, setWidth] = React.useState(
     typeof window !== "undefined" ? window.innerWidth : 1024
   )
+  const [simWidth, setSimWidth] = React.useState(null)
+  const effectiveWidth = simWidth ?? width
   React.useEffect(() => {
     const onResize = () => setWidth(window.innerWidth)
     window.addEventListener("resize", onResize)
@@ -125,15 +127,40 @@ export default function App() {
       "button",
       { onClick: () => setDark((d) => !d) },
       dark ? "Light Mode" : "Dark Mode"
+    ),
+    React.createElement(
+      "span",
+      { style: { marginLeft: "auto", fontSize: 12, color: "#666" } },
+      `vw: ${effectiveWidth}px`
+    ),
+    React.createElement(
+      "button",
+      { onClick: () => setSimWidth(640) },
+      "sm 640"
+    ),
+    React.createElement(
+      "button",
+      { onClick: () => setSimWidth(768) },
+      "md 768"
+    ),
+    React.createElement(
+      "button",
+      { onClick: () => setSimWidth(1024) },
+      "lg 1024"
+    ),
+    React.createElement(
+      "button",
+      { onClick: () => setSimWidth(null) },
+      "reset vw"
     )
   )
   const ResponsiveDemo = () => {
-    const gap = resolveResponsive({ base: 8, md: 16, xl: 24 }, width)
-    const cols = width < 640 ? 2 : width < 1024 ? 3 : 4
+    const gap = resolveResponsive({ base: 8, md: 16, xl: 24 }, effectiveWidth)
+    const cols = effectiveWidth < 640 ? 2 : effectiveWidth < 1024 ? 3 : 4
     return React.createElement(
       "div",
       { style: { padding: 12 } },
-      React.createElement("div", { style: { marginBottom: 8, color: "#555" } }, `Width: ${width}px, gap: ${gap}, cols: ${cols}`),
+      React.createElement("div", { style: { marginBottom: 8, color: "#555" } }, `Width: ${effectiveWidth}px, gap: ${gap}, cols: ${cols}`),
       React.createElement(
         Grid,
         { columns: cols, gap },
@@ -181,9 +208,9 @@ export default function App() {
     )
   }
   const AreasResponsiveDemo = () => {
-    const areas = width < 768 ? `"hd" "sd" "ct"` : `"hd hd" "sd ct"`
-    const cols = width < 768 ? "1fr" : "200px 1fr"
-    const rows = width < 768 ? "auto auto 1fr" : "auto 1fr"
+    const areas = effectiveWidth < 768 ? `"hd" "sd" "ct"` : `"hd hd" "sd ct"`
+    const cols = effectiveWidth < 768 ? "1fr" : "200px 1fr"
+    const rows = effectiveWidth < 768 ? "auto auto 1fr" : "auto 1fr"
     return React.createElement(
       "div",
       { style: { padding: 12 } },
@@ -202,7 +229,9 @@ export default function App() {
     )
   }
   const ResponsiveSidebarDemo = () => {
-    const sw = resolveResponsive({ base: 120, md: 200, xl: 280 }, width)
+    const [override, setOverride] = React.useState(null)
+    const swBase = resolveResponsive({ base: 120, md: 200, xl: 280 }, effectiveWidth)
+    const sw = override ?? swBase
     const sidebar = React.createElement("div", { style: { padding: 12 } }, `Sidebar ${sw}px`)
     const content = React.createElement(
       Stack,
@@ -216,21 +245,37 @@ export default function App() {
       React.createElement(
         "div",
         { style: { marginBottom: 8, color: "#555" } },
-        `Width: ${width}px → sidebarWidth: ${sw}px`
+        `Width: ${effectiveWidth}px → sidebarWidth: ${sw}px`
+      ),
+      React.createElement(
+        "div",
+        { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 8 } },
+        React.createElement("input", {
+          type: "range",
+          min: 80,
+          max: 320,
+          value: sw,
+          onChange: (e) => setOverride(+e.target.value)
+        }),
+        React.createElement(
+          "button",
+          { onClick: () => setOverride(null) },
+          "reset"
+        )
       ),
       React.createElement(SidebarLayout, { sidebar, children: content, sidebarWidth: sw })
     )
   }
   const BoxResponsiveDemo = () => {
-    const pad = resolveResponsive({ base: 8, md: 16, xl: 24 }, width)
-    const mar = resolveResponsive({ base: 8, md: 16, xl: 24 }, width)
+    const pad = resolveResponsive({ base: 8, md: 16, xl: 24 }, effectiveWidth)
+    const mar = resolveResponsive({ base: 8, md: 16, xl: 24 }, effectiveWidth)
     return React.createElement(
       "div",
       { style: { padding: 12 } },
       React.createElement(
         "div",
         { style: { marginBottom: 8, color: "#555" } },
-        `Width: ${width}px → padding: ${pad}px, margin: ${mar}px`
+        `Width: ${effectiveWidth}px → padding: ${pad}px, margin: ${mar}px`
       ),
       React.createElement(
         Box,
