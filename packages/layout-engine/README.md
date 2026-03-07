@@ -5,7 +5,7 @@ Headless layout engine berfokus pada primitives (Box, Flex, Stack, Grid) dan str
 ## Instalasi
 
 ```bash
-npm install layout-engine
+npm install @damarkuncoro/layout-engine
 ```
 
 ## Fitur

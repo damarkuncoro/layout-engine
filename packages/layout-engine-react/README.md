@@ -5,7 +5,7 @@ Adaptor React untuk `layout-engine`. Mengubah headless nodes menjadi komponen Re
 ## Instalasi
 
 ```bash
-npm install layout-engine-react
+npm install @damarkuncoro/layout-engine-react
 ```
 
 Pastikan `react` dan `react-dom` tersedia.

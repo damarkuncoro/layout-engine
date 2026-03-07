@@ -1,5 +1,5 @@
 {
-  "name": "layout-engine-react",
+  "name": "@damarkuncoro/layout-engine-react",
   "version": "0.1.0",
   "description": "React adapter for layout-engine (headless → React components)",
   "license": "MIT",
@@ -36,10 +36,10 @@
     "react-dom": "^18.0.0"
   },
   "dependencies": {
-    "layout-engine": "^0.1.0"
+    "@damarkuncoro/layout-engine": "^0.1.0"
   },
   "devDependencies": {
     "typescript": "^5.4.0",
-    "layout-engine": "file:../layout-engine"
+    "@damarkuncoro/layout-engine": "file:../layout-engine"
   }
 }
