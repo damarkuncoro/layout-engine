@@ -11,6 +11,16 @@
   "files": [
     "dist"
   ],
+  "keywords": [
+    "layout",
+    "ui",
+    "headless",
+    "responsive",
+    "primitives"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
