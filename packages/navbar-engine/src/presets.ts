@@ -92,3 +92,46 @@ export function NavbarGlassBlur(props: NavbarProps) {
     ...props
   })
 }
+
+export function NavbarModern(props: NavbarProps) {
+  return Navbar({
+    variant: "light",
+    elevation: true,
+    border: true,
+    contentPadding: "0 16px",
+    barPadding: "0 8px",
+    ...props
+  })
+}
+
+export function NavbarBrutalist(props: NavbarProps) {
+  return Navbar({
+    variant: "light",
+    elevation: false,
+    border: true,
+    contentPadding: "0 16px",
+    barPadding: "0 8px",
+    style: {
+      border: "4px solid #000000",
+      boxShadow: "8px 8px 0 0 rgba(0,0,0,1)",
+      borderRadius: "0"
+    },
+    ...props
+  })
+}
+
+export function NavbarFloating(props: NavbarProps) {
+  return Navbar({
+    variant: "light",
+    elevation: true,
+    border: true,
+    contentPadding: "0 20px",
+    barPadding: "8px 12px",
+    style: {
+      marginTop: "16px",
+      borderRadius: "12px",
+      boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)"
+    },
+    ...props
+  })
+}

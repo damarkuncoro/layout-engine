@@ -89,6 +89,33 @@ export function NavbarGlassBlurAutoVW(props: N.NavbarProps & { viewportWidth?: n
   return renderNodeToReact(node)
 }
 
+export function NavbarModern(props: N.NavbarProps) {
+  const node = (N as any).NavbarModern(props as any)
+  return renderNodeToReact(node)
+}
+export function NavbarModernAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
+  const vw = useViewport()
+  const node = (N as any).NavbarModern({ viewportWidth: props?.viewportWidth ?? vw, ...props })
+  return renderNodeToReact(node)
+}
+export function NavbarBrutalist(props: N.NavbarProps) {
+  const node = (N as any).NavbarBrutalist(props as any)
+  return renderNodeToReact(node)
+}
+export function NavbarBrutalistAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
+  const vw = useViewport()
+  const node = (N as any).NavbarBrutalist({ viewportWidth: props?.viewportWidth ?? vw, ...props })
+  return renderNodeToReact(node)
+}
+export function NavbarFloating(props: N.NavbarProps) {
+  const node = (N as any).NavbarFloating(props as any)
+  return renderNodeToReact(node)
+}
+export function NavbarFloatingAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
+  const vw = useViewport()
+  const node = (N as any).NavbarFloating({ viewportWidth: props?.viewportWidth ?? vw, ...props })
+  return renderNodeToReact(node)
+}
 export function NavbarTransparentSolidAutoWithOutsideClose(props: N.NavbarProps & { viewportWidth?: number }) {
   const vw = useViewport()
   const [scrolled, setScrolled] = React.useState(false)
