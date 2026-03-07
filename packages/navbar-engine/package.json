@@ -1,7 +1,7 @@
 {
-  "name": "@damarkuncoro/layout-engine-react",
-  "version": "0.1.1",
-  "description": "React adapter for layout-engine (headless → React components)",
+  "name": "@damarkuncoro/navbar-engine",
+  "version": "0.1.0",
+  "description": "Headless navbar engine with slots and variants",
   "license": "MIT",
   "type": "module",
   "main": "./lib/cjs/index.js",
@@ -12,11 +12,11 @@
     "lib"
   ],
   "keywords": [
-    "layout",
-    "react",
+    "navbar",
+    "navigation",
     "headless",
-    "responsive",
-    "primitives"
+    "ui",
+    "layout"
   ],
   "engines": {
     "node": ">=18"
@@ -29,6 +29,9 @@
     },
     "./package.json": "./package.json"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:cjs": "tsc -p tsconfig.cjs.json",
@@ -36,22 +39,11 @@
     "build": "npm run build:esm && npm run build:cjs && npm run postbuild:cjs",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
-  "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
-  },
   "dependencies": {
-    "@damarkuncoro/layout-engine": "^0.1.1",
-    "@damarkuncoro/navbar-engine": "^0.1.0"
+    "@damarkuncoro/layout-engine": "^0.1.1"
   },
   "devDependencies": {
     "typescript": "^5.4.0",
-    "@damarkuncoro/layout-engine": "file:../layout-engine",
-    "@damarkuncoro/navbar-engine": "file:../navbar-engine",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0"
-  },
-  "publishConfig": {
-    "access": "public"
+    "@damarkuncoro/layout-engine": "file:../layout-engine"
   }
 }

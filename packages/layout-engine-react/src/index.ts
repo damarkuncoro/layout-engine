@@ -1,6 +1,168 @@
 import * as H from "@damarkuncoro/layout-engine"
+import React from "react"
 import { renderNodeToReact } from "./renderReact.js"
 import { useViewport, BreakpointsProvider, useResponsive } from "./viewport.js"
+
+
+// Navbar-engine wrapper
+import * as N from "@damarkuncoro/navbar-engine"
+export type { NavbarProps } from "@damarkuncoro/navbar-engine"
+export function Navbar(props: N.NavbarProps) {
+  const node = N.Navbar(props)
+  return renderNodeToReact(node)
+}
+export function NavbarAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
+  const vw = useViewport()
+  const node = (N as any).Navbar({ viewportWidth: props?.viewportWidth ?? vw, ...props })
+  return renderNodeToReact(node)
+}
+export function NavbarTransparentSolid(props: N.NavbarProps) {
+  const node = (N as any).NavbarTransparentSolid(props as any)
+  return renderNodeToReact(node)
+}
+export function NavbarTransparentSolidAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
+  const vw = useViewport()
+  const node = (N as any).NavbarTransparentSolid({ viewportWidth: props?.viewportWidth ?? vw, ...props })
+  return renderNodeToReact(node)
+}
+export function NavbarTopStickyLight(props: N.NavbarProps) {
+  const node = (N as any).NavbarTopStickyLight(props as any)
+  return renderNodeToReact(node)
+}
+export function NavbarTopStickyLightAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
+  const vw = useViewport()
+  const node = (N as any).NavbarTopStickyLight({ viewportWidth: props?.viewportWidth ?? vw, ...props })
+  return renderNodeToReact(node)
+}
+export function NavbarCenteredBrand(props: N.NavbarProps) {
+  const node = (N as any).NavbarCenteredBrand(props as any)
+  return renderNodeToReact(node)
+}
+export function NavbarCenteredBrandAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
+  const vw = useViewport()
+  const node = (N as any).NavbarCenteredBrand({ viewportWidth: props?.viewportWidth ?? vw, ...props })
+  return renderNodeToReact(node)
+}
+export function NavbarUnderlineOnly(props: N.NavbarProps) {
+  const node = (N as any).NavbarUnderlineOnly(props as any)
+  return renderNodeToReact(node)
+}
+export function NavbarUnderlineOnlyAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
+  const vw = useViewport()
+  const node = (N as any).NavbarUnderlineOnly({ viewportWidth: props?.viewportWidth ?? vw, ...props })
+  return renderNodeToReact(node)
+}
+
+export function NavbarTransparentSolidAuto(props: N.NavbarProps & { viewportWidth?: number }) {
+  const vw = useViewport()
+  const [scrolled, setScrolled] = React.useState(false)
+  const [reduceMotion, setReduceMotion] = React.useState(false)
+  React.useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 16)
+    onScroll()
+    window.addEventListener("scroll", onScroll)
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+  React.useEffect(() => {
+    const mq = window.matchMedia?.("(prefers-reduced-motion: reduce)")
+    const apply = () => setReduceMotion(!!mq?.matches)
+    apply()
+    mq?.addEventListener?.("change", apply)
+    return () => mq?.removeEventListener?.("change", apply)
+  }, [])
+  const node = (N as any).NavbarTransparentSolid({
+    viewportWidth: props?.viewportWidth ?? vw,
+    scrolled,
+    reduceMotion,
+    ...props
+  })
+  return renderNodeToReact(node)
+}
+
+export function NavbarGlassBlur(props: N.NavbarProps) {
+  const node = (N as any).NavbarGlassBlur(props as any)
+  return renderNodeToReact(node)
+}
+export function NavbarGlassBlurAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
+  const vw = useViewport()
+  const node = (N as any).NavbarGlassBlur({ viewportWidth: props?.viewportWidth ?? vw, ...props })
+  return renderNodeToReact(node)
+}
+
+export function NavbarTransparentSolidAutoWithOutsideClose(props: N.NavbarProps & { viewportWidth?: number }) {
+  const vw = useViewport()
+  const [scrolled, setScrolled] = React.useState(false)
+  const [reduceMotion, setReduceMotion] = React.useState(false)
+  const ref = React.useRef<HTMLDivElement | null>(null)
+  React.useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 16)
+    onScroll()
+    window.addEventListener("scroll", onScroll)
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+  React.useEffect(() => {
+    const mq = window.matchMedia?.("(prefers-reduced-motion: reduce)")
+    const apply = () => setReduceMotion(!!mq?.matches)
+    apply()
+    mq?.addEventListener?.("change", apply)
+    return () => mq?.removeEventListener?.("change", apply)
+  }, [])
+  React.useEffect(() => {
+    const handler = (e: any) => {
+      if (!props.menuOpen) return
+      const el = ref.current
+      if (el && e.target && !el.contains(e.target)) {
+        props.onMenuToggle?.(e)
+      }
+    }
+    document.addEventListener("mousedown", handler)
+    return () => document.removeEventListener("mousedown", handler)
+  }, [props.menuOpen])
+  React.useEffect(() => {
+    if (!props.menuOpen) return
+    const panelId = (props as any).menuId ?? "navbar-menu"
+    const panel = document.getElementById(panelId)
+    if (!panel) return
+    const selector = (props as any).menuItemSelector ?? 'a,button,[role="menuitem"]'
+    const items = Array.from(panel.querySelectorAll(selector)) as HTMLElement[]
+    const focusFirst = () => items[0]?.focus?.()
+    const onKey = (e: KeyboardEvent) => {
+      const { key } = e
+      if (!items.length) return
+      const currentIndex = items.findIndex((it) => it === document.activeElement)
+      const next = (i: number) => items[(i + items.length) % items.length]?.focus?.()
+      if (key === "ArrowDown" || key === "ArrowRight") {
+        e.preventDefault()
+        if (currentIndex < 0) focusFirst()
+        else next(currentIndex + 1)
+      } else if (key === "ArrowUp" || key === "ArrowLeft") {
+        e.preventDefault()
+        if (currentIndex < 0) items[items.length - 1]?.focus?.()
+        else next(currentIndex - 1)
+      } else if (key === "Home") {
+        e.preventDefault()
+        focusFirst()
+      } else if (key === "End") {
+        e.preventDefault()
+        items[items.length - 1]?.focus?.()
+      } else if (key === "Escape") {
+        e.preventDefault()
+        ;(props as any).onMenuToggle?.(e)
+      }
+    }
+    panel.addEventListener("keydown", onKey as any)
+    // Focus panel to enable keyboard nav if nothing focused
+    ;(panel as any).focus?.()
+    return () => panel.removeEventListener("keydown", onKey as any)
+  }, [props.menuOpen, (props as any).menuId, (props as any).menuItemSelector])
+  const node = (N as any).NavbarTransparentSolid({
+    viewportWidth: props?.viewportWidth ?? vw,
+    scrolled,
+    reduceMotion,
+    ...props
+  })
+  return React.createElement("div", { ref }, renderNodeToReact(node))
+}
 
 export type {
   CSSLength,

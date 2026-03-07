@@ -1,14 +1,13 @@
+import type { CSSLength, LayoutProps } from "../system/types.js"
 import { normalizeUnit } from "../core/styleResolver.js"
-import type { LayoutProps } from "../system/types.js"
 
-export { type LayoutProps }
+export interface StackProps extends LayoutProps {
+  gap?: CSSLength
+}
 
-/**
- * Komponen blok dasar yang memetakan LayoutProps → inline style.
- * Gunakan untuk membangun primitive lainnya.
- */
-export function Box({
+export function Stack({
   children,
+  gap = 8,
   padding,
   margin,
   width,
@@ -16,13 +15,15 @@ export function Box({
   display,
   style,
   ...rest
-}: (LayoutProps & { children?: any } & Record<string, any>)) {
+}: StackProps & { children?: any }) {
   const resolved: Record<string, any> = {
     padding: normalizeUnit(padding),
     margin: normalizeUnit(margin),
     width: normalizeUnit(width),
     height: normalizeUnit(height),
-    display,
+    display: display ?? "flex",
+    flexDirection: "column",
+    gap: normalizeUnit(gap as any),
     ...style
   }
   return {

@@ -22,10 +22,25 @@ export const renderNodeToReact = (node: HeadlessNode): any => {
   const { type, props } = node
   const { children, className, style, ...rest } = props || {}
   
-  // Merge className and style like standard React
-  const mergedProps: Record<string, any> = { ...rest }
+  const STYLE_PROPS = new Set([
+    "marginTop","marginBottom","marginLeft","marginRight","margin",
+    "paddingTop","paddingBottom","paddingLeft","paddingRight","padding",
+    "width","height","display","justifyContent","alignItems","gap","flexDirection",
+    "position","top","left","right","bottom",
+    "background","backgroundColor","color","border","borderTop","borderBottom","borderLeft","borderRight","borderRadius",
+    "fontSize","fontWeight","lineHeight","textAlign","cursor","zIndex"
+  ])
+  const mergedProps: Record<string, any> = {}
+  const mergedStyle: Record<string, any> = style ? { ...style } : {}
+  for (const k in rest) {
+    if (STYLE_PROPS.has(k)) {
+      mergedStyle[k] = (rest as any)[k]
+    } else {
+      ;(mergedProps as any)[k] = (rest as any)[k]
+    }
+  }
   if (className) mergedProps.className = className
-  if (style) mergedProps.style = { ...style }
+  if (Object.keys(mergedStyle).length > 0) mergedProps.style = mergedStyle
   
   const child = toChild(children)
   return React.createElement(type, mergedProps, child)
