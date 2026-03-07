@@ -1,5 +1,5 @@
 import React from "react"
-import { SidebarLayout, SidebarLayoutAutoVW, HeaderContentFooter, Stack, Grid, Flex, Box, Container } from "@damarkuncoro/layout-engine-react"
+import { SidebarLayout, SidebarLayoutAutoVW, HeaderContentFooter, StatsGridPreset, ProductGridPreset, ProductDetailPreset, Stack, Grid, Flex, Box, Container } from "@damarkuncoro/layout-engine-react"
 import { resolveResponsive } from "@damarkuncoro/layout-engine"
 import { Routes, Route, Link, useNavigate, useParams, useLocation } from "react-router-dom"
 
@@ -102,6 +102,21 @@ export default function App() {
       "button",
       { onClick: () => setView("areas-resp") },
       "Areas Resp"
+    ),
+    React.createElement(
+      "button",
+      { onClick: () => setView("stats") },
+      "Stats Preset"
+    ),
+    React.createElement(
+      "button",
+      { onClick: () => setView("products") },
+      "Products"
+    ),
+    React.createElement(
+      "button",
+      { onClick: () => setView("product-detail") },
+      "Product Detail"
     ),
     React.createElement(
       "button",
@@ -286,6 +301,43 @@ export default function App() {
       )
     )
   }
+  const StatsPresetDemo = () => {
+    const cards = Array.from({ length: 8 }).map((_, i) =>
+      React.createElement("div", { key: "st" + i, style: { padding: 12, border: "1px solid #ddd" } }, `Stat ${i + 1}`)
+    )
+    return React.createElement(
+      "div",
+      { style: { padding: 12 } },
+      React.createElement(StatsGridPreset, { stats: cards, columns: 4 })
+    )
+  }
+  const ProductGridDemo = () => {
+    const cards = Array.from({ length: 9 }).map((_, i) =>
+      React.createElement(
+        "div",
+        { key: "pd" + i, style: { padding: 12, border: "1px solid #ddd" } },
+        `Product ${i + 1}`
+      )
+    )
+    return React.createElement(
+      "div",
+      { style: { padding: 12 } },
+      React.createElement(ProductGridPreset, { products: cards, columns: 3 })
+    )
+  }
+  const ProductDetailDemo = () => {
+    const image = React.createElement("div", { style: { padding: 12, border: "1px solid #ddd", height: 240 } }, "Image")
+    const title = React.createElement("h2", null, "Awesome Product")
+    const price = React.createElement("div", null, "$199.00")
+    const description = React.createElement("p", null, "Short description of the product goes here.")
+    const actions = React.createElement("div", null, React.createElement("button", null, "Add to Cart"))
+    const specs = React.createElement("ul", null, React.createElement("li", null, "Spec A"), React.createElement("li", null, "Spec B"))
+    return React.createElement(
+      "div",
+      { style: { padding: 12 } },
+      React.createElement(ProductDetailPreset, { image, title, price, description, actions, specs })
+    )
+  }
   const content =
     view === "dashboard"
       ? React.createElement(Dashboard, { collapsed })
@@ -303,6 +355,8 @@ export default function App() {
       ? React.createElement(ResponsiveSidebarDemo)
       : view === "box"
       ? React.createElement(BoxResponsiveDemo)
+      : view === "stats"
+      ? React.createElement(StatsPresetDemo)
       : view === "hcf"
       ? React.createElement(
           Container,
@@ -318,6 +372,10 @@ export default function App() {
             footer: React.createElement("div", { style: { padding: 12, borderTop: "1px solid #e5e5e5" } }, "Footer")
           })
         )
+      : view === "products"
+      ? React.createElement(ProductGridDemo)
+      : view === "product-detail"
+      ? React.createElement(ProductDetailDemo)
       : view === "router"
       ? React.createElement(RouterDemo)
       : React.createElement(
