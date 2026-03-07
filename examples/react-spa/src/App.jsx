@@ -1,5 +1,5 @@
 import React from "react"
-import { SidebarLayout, SidebarLayoutAutoVW, HeaderContentFooter, StatsGridPreset, ProductGridPreset, ProductDetailPreset, Stack, Grid, Flex, Box, Container } from "@damarkuncoro/layout-engine-react"
+import { SidebarLayout, SidebarLayoutAutoVW, HeaderContentFooter, StatsGridPreset, ProductGridPreset, ProductDetailPreset, Stack, Grid, Flex, Box, Container, themeLight, themeDark } from "@damarkuncoro/layout-engine-react"
 import { resolveResponsive } from "@damarkuncoro/layout-engine"
 import { Routes, Route, Link, useNavigate, useParams, useLocation } from "react-router-dom"
 
@@ -54,6 +54,7 @@ export default function App() {
   const [collapsed, setCollapsed] = React.useState(false)
   const [dark, setDark] = React.useState(false)
   const [outline, setOutline] = React.useState(false)
+  const theme = dark ? themeDark : themeLight
   const navigate = useNavigate()
   const [width, setWidth] = React.useState(
     typeof window !== "undefined" ? window.innerWidth : 1024
@@ -67,7 +68,7 @@ export default function App() {
   }, [])
   const toolbar = React.createElement(
     "div",
-    { style: { padding: 12, display: "flex", gap: 8, borderBottom: "1px dashed #ddd" } },
+    { style: { padding: 12, display: "flex", gap: 8, borderBottom: `1px dashed ${theme.border}` } },
     React.createElement(
       "button",
       { onClick: () => setView("dashboard") },
@@ -388,11 +389,9 @@ export default function App() {
           ),
           React.createElement(FlexDemo)
         )
-  const bg = dark ? "#0f172a" : "#fff"
-  const fg = dark ? "#e2e8f0" : "#111"
-  const outlineCss = outline
-    ? `.preview *{outline:1px dashed ${dark ? "#334155" : "#94a3b8"}}`
-    : ""
+  const bg = theme.bg
+  const fg = theme.fg
+  const outlineCss = outline ? `.preview *{outline:1px dashed ${theme.border}}` : ""
   return React.createElement(
     "div",
     { style: { background: bg, color: fg, minHeight: "100vh" } },
@@ -452,7 +451,7 @@ function RouterDemo() {
     React.createElement(Link, { key: "r-ov-re", to: "/router/overview/reports" }, "Overview: Reports"),
     React.createElement(Link, { key: "r-st", to: "/router/settings/general" }, "Settings")
   )
-  const header = React.createElement("div", { style: { padding: 12, borderBottom: "1px solid #e5e5e5" } }, "Router Demo")
+  const header = React.createElement("div", { style: { padding: 12, borderBottom: `1px solid ${themeLight.border}`, background: themeLight.bgSubtle } }, "Router Demo")
   const OverviewDefault = () => React.createElement("div", { style: { padding: 12 } }, "Overview Content")
   const OverviewSection = () => {
     const p = useParams()
@@ -484,7 +483,7 @@ function RouterDemo() {
     const segs = loc.pathname.split("/").filter(Boolean)
     return React.createElement(
       "div",
-      { style: { padding: "8px 12px", fontSize: 12, color: "#555", borderBottom: "1px dashed #e5e5e5" } },
+      { style: { padding: "8px 12px", fontSize: 12, color: "#555", borderBottom: `1px dashed ${themeLight.border}` } },
       segs.join(" / ")
     )
   }
@@ -495,7 +494,7 @@ function RouterDemo() {
     React.createElement(Route, { path: "/router/overview/:section", element: React.createElement(OverviewSection) }),
     React.createElement(Route, { path: "/router/settings/*", element: React.createElement(SettingsLayout) })
   )
-  return React.createElement(
+    return React.createElement(
     "div",
     { style: { height: "calc(100vh - 56px)", display: "flex", flexDirection: "column" } },
     header,
