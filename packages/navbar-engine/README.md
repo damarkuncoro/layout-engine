@@ -1,6 +1,6 @@
 # @damarkuncoro/navbar-engine
 
-Headless navbar engine with slots and variants. Paket ini dirancang untuk memudahkan pembuatan navigasi tingkat lanjut dengan fleksibilitas tata letak penuh.
+Headless navbar engine with slots and variants. Paket ini dirancang untuk memudahkan pembuatan navigasi tingkat lanjut dengan fleksibilitas tata letak penuh, struktur data menu yang kuat, dan dukungan aksesibilitas (A11y).
 
 ## Instalasi
 
@@ -11,28 +11,45 @@ npm install @damarkuncoro/navbar-engine
 **Kebutuhan**: Bergantung pada `@damarkuncoro/layout-engine`.
 
 ## Fitur Unggulan
-- **Slot Architecture**: Gunakan slot `left`, `center`, dan `right` untuk kontrol konten penuh.
-- **Headless UI**: Memberikan struktur node tanpa opini gaya yang mengikat, memudahkan integrasi dengan React, Vue, atau Svelte.
+- **Slot Architecture**: Gunakan slot `left`, `center`, `right`, `search`, dan `actions` untuk kontrol konten penuh.
+- **Structured Menu & Dropdowns**: Dukungan interface `NavMenuItem` untuk menu bertingkat (dropdown) yang berfungsi di desktop maupun mobile (accordion).
+- **Integrated Search & Actions**: Slot khusus untuk Search Bar dan Action Buttons (CTA) dengan varian gaya yang beragam.
+- **Semantic & Accessible**: Menggunakan tag HTML semantik (`<nav>`, `<ul>`, `<li>`, `<button>`) dan atribut ARIA untuk aksesibilitas yang lebih baik.
+- **Modular Design**: Komponen internal dipisahkan secara modular (`mainbar` dan `mobilepanel`) untuk pemeliharaan yang lebih mudah.
 - **Scroll-Aware**: Logika bawaan untuk fitur `sticky`, `shrinkOnScroll`, dan `solidOnScroll`.
-- **Responsive Mobile Menu**: Panel menu seluler otomatis yang diatur melalui state eksternal.
 - **Ready-to-use Presets**: Dilengkapi dengan preset modern seperti `NavbarGlassBlur`, `NavbarModern`, `NavbarFloating`, dll.
 
 ## Penggunaan Dasar
 
-### Menggunakan Primitif Navbar
+### Navbar dengan Menu Terstruktur & Search
 
 ```js
 import { Navbar } from "@damarkuncoro/navbar-engine"
 
 const myNav = Navbar({
   left: "MyLogo",
-  center: ["Home", "About", "Contact"],
-  right: "Login",
-  height: 64,
+  center: [
+    { id: "home", label: "Home", href: "/" },
+    { 
+      id: "products", 
+      label: "Products", 
+      dropdown: [
+        { id: "p1", label: "Analytics", href: "/analytics" },
+        { id: "p2", label: "Automation", href: "/automation" }
+      ],
+      dropdownVariant: "glass"
+    }
+  ],
+  search: { 
+    placeholder: "Search products...", 
+    showOnMobile: true 
+  },
+  actions: [
+    { id: "login", label: "Login", variant: "outline" },
+    { id: "signup", label: "Sign Up", variant: "primary" }
+  ],
   position: "sticky",
-  variant: "light",
-  elevation: true,
-  border: true
+  elevation: true
 })
 ```
 
@@ -44,7 +61,7 @@ import { NavbarModern, NavbarGlassBlur } from "@damarkuncoro/navbar-engine"
 // Navbar dengan efek glassmorphism yang cantik
 const glassNav = NavbarGlassBlur({
   left: "Brand",
-  center: ["Pricing", "Docs"],
+  center: [...items],
   right: "Get Started"
 })
 ```

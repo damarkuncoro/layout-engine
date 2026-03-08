@@ -10,32 +10,31 @@ npm install @damarkuncoro/layout-engine
 
 ## Fitur Unggulan
 - **Headless Architecture**: Menghasilkan struktur node murni yang mudah dirender ke HTML string, React components, atau adaptor UI lainnya.
+- **Semantic HTML**: Primitif (Box, Flex, dll) mendukung properti `tag` untuk merender elemen HTML semantik seperti `nav`, `section`, `ul`, `li`.
 - **Primitives**: Box, Flex, Stack, Grid, Spacer, Center, Container.
 - **Advanced Structures**: SidebarLayout, SplitLayout, HeaderLayout, HeaderContentFooter.
 - **Responsive System**: Sistem breakpoints bawaan (sm, md, lg, xl, 2xl) yang bisa di-resolve secara dinamis.
+- **Global Constants**: Konstanta layout terpusat untuk gap default, z-index, dan transisi demi konsistensi visual.
 - **Theme Support**: Token warna, tipografi, spacing, dan shadow yang konsisten.
 
 ## Penggunaan Dasar
 
-### Render Headless ke HTML String
+### Render Headless ke HTML String dengan Tag Semantik
 
 ```js
-import { Box, Stack, SidebarLayout, renderToString } from "@damarkuncoro/layout-engine"
+import { Box, Flex, renderToString } from "@damarkuncoro/layout-engine"
 
-const page = SidebarLayout({
-  sidebar: Box({ children: "Sidebar Content" }),
-  children: Stack({ 
-    gap: 16, 
-    children: [
-      Box({ children: "Card 1" }), 
-      Box({ children: "Card 2" })
-    ] 
-  }),
-  sidebarWidth: { base: "100%", md: 240 },
-  viewportWidth: 1024 // Simulasi lebar layar
+const nav = Flex({
+  tag: "nav",
+  children: [
+    Box({ tag: "ul", style: { listStyle: "none" }, children: [
+      Box({ tag: "li", children: "Home" }),
+      Box({ tag: "li", children: "Docs" })
+    ]})
+  ]
 })
 
-console.log(renderToString(page))
+console.log(renderToString(nav))
 ```
 
 ### Resolusi Nilai Responsif
