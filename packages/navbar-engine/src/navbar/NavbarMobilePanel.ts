@@ -1,4 +1,5 @@
 import { Box, Container, theme } from "@damarkuncoro/layout-engine"
+import { NAVBAR_DEFAULTS } from "../constants/defaults.js"
 
 export function NavbarMobilePanel({
   collapsed,
@@ -12,7 +13,7 @@ export function NavbarMobilePanel({
   if (!collapsed || !center) return null
 
   const panelContent = Box({
-    style: { padding: "8px 0" },
+    style: { padding: NAVBAR_DEFAULTS.GLASS_PADDING_Y },
     children: center
   })
 

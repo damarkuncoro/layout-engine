@@ -1,4 +1,5 @@
 import { Box, Flex, normalizeUnit } from "@damarkuncoro/layout-engine"
+import { NAVBAR_DEFAULTS } from "../constants/defaults.js"
 
 export function NavbarMainBar({
   left,
@@ -38,7 +39,7 @@ export function NavbarMainBar({
                   onMenuToggle?.(e)
                 }
               },
-              style: { cursor: "pointer", padding: "8px 12px", userSelect: "none" },
+              style: { cursor: "pointer", padding: NAVBAR_DEFAULTS.BAR_PADDING, userSelect: "none" },
               children: "☰"
             } as any)
           : Box({ children: right })

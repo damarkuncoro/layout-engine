@@ -1,6 +1,6 @@
 import { Container, Box, theme, breakpoints, normalizeUnit } from "@damarkuncoro/layout-engine"
 import type { NavbarProps } from "../contracts.js"
-import { getBgForVariant, getNavbarRootStyle } from "./utils.js"
+import { getBgForVariant, getNavbarRootStyle, computeNavbarHeight } from "./utils.js"
 import { NavbarMainBar } from "./NavbarMainBar.js"
 import { NavbarMobilePanel } from "./NavbarMobilePanel.js"
 import { NAVBAR_DEFAULTS } from "../constants/defaults.js"
@@ -36,13 +36,10 @@ export function Navbar(props: NavbarProps) {
   const threshold =
     typeof collapseAt === "number"
       ? collapseAt
-      : (breakpoints as any)[collapseAt ?? "md"] ?? (breakpoints as any).md
+      : (breakpoints as Record<string, number>)[collapseAt ?? "md"] ?? (breakpoints as Record<string, number>).md
   const collapsed = typeof viewportWidth === "number" ? viewportWidth < threshold : false
 
-  const computedHeight =
-    (scrolled && shrinkOnScroll 
-      ? normalizeUnit(typeof height === "number" ? Math.max(NAVBAR_DEFAULTS.HEIGHT_SHRUNK, (height as number) - 8) : height) 
-      : normalizeUnit(height as any)) || `${NAVBAR_DEFAULTS.HEIGHT}px`
+  const computedHeight = computeNavbarHeight(height, scrolled, shrinkOnScroll)
 
   const bgResolved =
     (variant === "transparent" && scrolled && solidOnScroll 

@@ -27,6 +27,18 @@ interface RootStyleProps {
   style?: Record<string, any>
 }
 
+export const computeNavbarHeight = (
+  height: string | number | undefined,
+  scrolled: boolean,
+  shrinkOnScroll: boolean
+): string => {
+  if (scrolled && shrinkOnScroll) {
+    const numericHeight = typeof height === "number" ? height : parseInt(height as string) || NAVBAR_DEFAULTS.HEIGHT
+    return normalizeUnit(Math.max(NAVBAR_DEFAULTS.HEIGHT_SHRUNK, numericHeight - 8)) || `${NAVBAR_DEFAULTS.HEIGHT_SHRUNK}px`
+  }
+  return normalizeUnit(height as any) || `${NAVBAR_DEFAULTS.HEIGHT}px`
+}
+
 export const getNavbarRootStyle = ({
   position,
   top,

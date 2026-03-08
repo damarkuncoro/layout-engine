@@ -1,16 +1,18 @@
+import { HeadlessNode, CSSLength, BreakpointKey } from "@damarkuncoro/layout-engine"
+
 export type NavbarPosition = "static" | "sticky" | "fixed"
 export type NavbarVariant = "light" | "dark" | "transparent" | "solid"
 
 export interface NavbarSlots {
-  left?: any
+  left?: any // Could be string, HeadlessNode, or array
   center?: any
   right?: any
 }
 
 export interface NavbarProps extends NavbarSlots {
-  height?: number | string
+  height?: CSSLength
   position?: NavbarPosition
-  top?: number | string
+  top?: CSSLength
   variant?: NavbarVariant
   background?: string
   elevation?: boolean
@@ -19,7 +21,7 @@ export interface NavbarProps extends NavbarSlots {
   style?: Record<string, any>
   // Responsif
   viewportWidth?: number
-  collapseAt?: number | "sm" | "md" | "lg" | "xl" | "2xl"
+  collapseAt?: number | BreakpointKey
   menuOpen?: boolean
   onMenuToggle?: (e?: any) => void
   menuId?: string
@@ -31,6 +33,6 @@ export interface NavbarProps extends NavbarSlots {
   centerAbsolute?: boolean
   reduceMotion?: boolean
   // Spacing
-  contentPadding?: number | string
-  barPadding?: number | string
+  contentPadding?: CSSLength
+  barPadding?: CSSLength
 }
