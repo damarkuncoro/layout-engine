@@ -46,8 +46,8 @@
   },
   "devDependencies": {
     "typescript": "^5.4.0",
-    "@damarkuncoro/layout-engine": "file:../layout-engine",
-    "@damarkuncoro/navbar-engine": "file:../navbar-engine",
+    "@damarkuncoro/layout-engine": "workspace:*",
+    "@damarkuncoro/navbar-engine": "workspace:*",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0"
   },

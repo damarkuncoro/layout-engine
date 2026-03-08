@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Layout, 
   Code2, 
@@ -20,8 +20,13 @@ import { cn } from './lib/utils';
 import { NavbarPreview } from './components/NavbarPreview';
 import { EditorSidebar } from './components/EditorSidebar';
 
+const STORAGE_KEY = 'navcraft_config';
+
 export default function App() {
-  const [config, setConfig] = useState<NavbarConfig>(DEFAULT_CONFIG);
+  const [config, setConfig] = useState<NavbarConfig>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : DEFAULT_CONFIG;
+  });
   const [activeTab, setActiveTab] = useState<'layout' | 'style' | 'links' | 'code'>('layout');
   const [subTab, setSubTab] = useState<'tailwind' | 'le'>('tailwind');
   const [viewport, setViewport] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
@@ -32,6 +37,10 @@ export default function App() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copiedLE, setCopiedLE] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+  }, [config]);
 
   const updateConfig = (updates: Partial<NavbarConfig>) => {
     setConfig(prev => ({ ...prev, ...updates }));

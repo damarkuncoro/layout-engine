@@ -1,5 +1,5 @@
 import type { NavbarProps } from "./contracts.js"
-import { Navbar } from "./Navbar.js"
+import { Navbar } from "./navbar/Navbar.js"
 
 export function NavbarTransparentSolid(props: NavbarProps) {
   return Navbar({

@@ -44,6 +44,6 @@
   },
   "devDependencies": {
     "typescript": "^5.4.0",
-    "@damarkuncoro/layout-engine": "file:../layout-engine"
+    "@damarkuncoro/layout-engine": "workspace:*"
   }
 }
