@@ -35,6 +35,7 @@ export function Navbar(props: NavbarProps) {
     paddingX = NAVBAR_DEFAULTS.PADDING_X,
     shrinkPaddingY = NAVBAR_DEFAULTS.SHRINK_PADDING_Y,
     borderRadius = NAVBAR_DEFAULTS.BORDER_RADIUS,
+    alignment = "center",
     isFloating = false,
     floatingMarginTop = NAVBAR_DEFAULTS.FLOATING_MARGIN_TOP,
     floatingWidth = NAVBAR_DEFAULTS.FLOATING_WIDTH,
@@ -89,6 +90,7 @@ export function Navbar(props: NavbarProps) {
     barPadding,
     paddingY: (scrolled && shrinkOnScroll) ? shrinkPaddingY : paddingY,
     paddingX,
+    alignment,
     centerAbsolute,
     activeItemId
   })

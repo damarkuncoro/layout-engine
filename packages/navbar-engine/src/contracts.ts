@@ -73,6 +73,7 @@ export interface NavbarProps extends NavbarSlots {
   paddingX?: CSSLength
   shrinkPaddingY?: CSSLength
   borderRadius?: CSSLength
+  alignment?: "left" | "center" | "right" | "between"
   // Floating
   isFloating?: boolean
   floatingMarginTop?: CSSLength
@@ -88,6 +89,7 @@ export interface NavbarMainBarProps extends NavbarSlots {
   barPadding?: CSSLength
   paddingY?: CSSLength
   paddingX?: CSSLength
+  alignment?: "left" | "center" | "right" | "between"
   centerAbsolute?: boolean
   activeItemId?: string
   search?: NavbarSearchProps

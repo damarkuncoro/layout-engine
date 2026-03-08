@@ -48,6 +48,7 @@ const myNav = Navbar({
     { id: "login", label: "Login", variant: "outline" },
     { id: "signup", label: "Sign Up", variant: "primary" }
   ],
+  alignment: "between", // Pilihan: "left", "center", "right", "between"
   position: "sticky",
   elevation: true
 })
