@@ -1,5 +1,6 @@
 import { Box, Container, theme } from "@damarkuncoro/layout-engine"
 import { NAVBAR_DEFAULTS } from "../constants/defaults.js"
+import type { NavbarMobilePanelProps } from "../contracts.js"
 
 export function NavbarMobilePanel({
   collapsed,
@@ -9,7 +10,7 @@ export function NavbarMobilePanel({
   bgResolved,
   reduceMotion,
   contained
-}: any) {
+}: NavbarMobilePanelProps) {
   if (!collapsed || !center) return null
 
   const panelContent = Box({
@@ -22,13 +23,13 @@ export function NavbarMobilePanel({
     role: "menu",
     tabIndex: -1,
     style: {
-      borderTop: `1px solid ${(theme as any).border}`,
+      borderTop: `1px solid ${theme.border}`,
       backgroundColor: bgResolved,
       overflow: "hidden",
-      maxHeight: menuOpen ? "400px" : "0px",
+      maxHeight: menuOpen ? NAVBAR_DEFAULTS.MOBILE_MENU_MAX_HEIGHT : "0px",
       opacity: menuOpen ? 1 : 0,
       transform: menuOpen ? "translateY(0px)" : "translateY(-6px)",
-      transition: reduceMotion ? "none" : "max-height 220ms ease, opacity 140ms ease, transform 180ms ease"
+      transition: reduceMotion ? "none" : NAVBAR_DEFAULTS.TRANSITION_PANEL
     },
     children: contained ? Container({ children: panelContent }) : panelContent
   }) as any

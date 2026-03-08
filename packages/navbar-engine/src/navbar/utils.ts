@@ -6,14 +6,14 @@ export const getBgForVariant = (variant?: string, fallbackBg?: string): string =
   if (fallbackBg) return fallbackBg
   switch (variant) {
     case "dark":
-      return (theme as any).bgEmphasis ?? NAVBAR_DEFAULTS.FALLBACK_BG_DARK
+      return theme.bgEmphasis
     case "light":
-      return theme.bg ?? NAVBAR_DEFAULTS.FALLBACK_BG_LIGHT
+      return theme.bg
     case "transparent":
       return "transparent"
     case "solid":
     default:
-      return theme.bg ?? NAVBAR_DEFAULTS.FALLBACK_BG_LIGHT
+      return theme.bg
   }
 }
 

@@ -8,6 +8,7 @@ export { type LayoutProps }
  * Gunakan untuk membangun primitive lainnya.
  */
 export function Box({
+  tag = "div",
   children,
   padding,
   margin,
@@ -16,7 +17,7 @@ export function Box({
   display,
   style,
   ...rest
-}: (LayoutProps & { children?: any } & Record<string, any>)) {
+}: (LayoutProps & { children?: any; tag?: string } & Record<string, any>)) {
   const resolved: Record<string, any> = {
     padding: normalizeUnit(padding),
     margin: normalizeUnit(margin),
@@ -26,7 +27,7 @@ export function Box({
     ...style
   }
   return {
-    type: "div",
+    type: tag,
     props: {
       style: resolved,
       ...rest,

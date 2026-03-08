@@ -43,7 +43,7 @@ export function Navbar(props: NavbarProps) {
 
   const bgResolved =
     (variant === "transparent" && scrolled && solidOnScroll 
-      ? (theme as any).bg ?? NAVBAR_DEFAULTS.FALLBACK_BG_LIGHT 
+      ? theme.bg ?? NAVBAR_DEFAULTS.FALLBACK_BG_LIGHT 
       : getBgForVariant(variant, background)) || NAVBAR_DEFAULTS.FALLBACK_BG_LIGHT
 
   const rootStyle = getNavbarRootStyle({

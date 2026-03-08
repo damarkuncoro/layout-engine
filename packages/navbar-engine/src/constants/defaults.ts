@@ -22,5 +22,7 @@ export const NAVBAR_DEFAULTS = {
   SATURATE_AMOUNT: "saturate(180%)",
   GLASS_BG: "rgba(255,255,255,0.6)",
   FALLBACK_BG_DARK: "#111827",
-  FALLBACK_BG_LIGHT: "#ffffff"
+  FALLBACK_BG_LIGHT: "#ffffff",
+  MOBILE_MENU_MAX_HEIGHT: "400px",
+  TRANSITION_PANEL: "max-height 220ms ease, opacity 140ms ease, transform 180ms ease"
 }

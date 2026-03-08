@@ -16,9 +16,11 @@ export interface ThemeColors {
   bg: string
   bgSubtle: string
   bgMuted: string
+  bgEmphasis: string
   fg: string
   fgMuted: string
   fgSubtle: string
+  fgEmphasis: string
   border: string
   borderFocus: string
   success: string
@@ -129,9 +131,11 @@ export const themeLight: Theme = {
   bg: "#ffffff",
   bgSubtle: "#f8fafc",
   bgMuted: "#f1f5f9",
+  bgEmphasis: "#f1f5f9",
   fg: "#0f172a",
   fgMuted: "#475569",
   fgSubtle: "#94a3b8",
+  fgEmphasis: "#000000",
   border: "#e2e8f0",
   borderFocus: "#3b82f6",
   success: "#22c55e",
@@ -217,9 +221,11 @@ export const themeDark: Theme = {
   bg: "#0f172a",
   bgSubtle: "#1e293b",
   bgMuted: "#334155",
+  bgEmphasis: "#111827",
   fg: "#f8fafc",
   fgMuted: "#cbd5e1",
   fgSubtle: "#64748b",
+  fgEmphasis: "#ffffff",
   border: "#334155",
   borderFocus: "#3b82f6",
   success: "#22c55e",

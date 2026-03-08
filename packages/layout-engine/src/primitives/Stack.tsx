@@ -1,5 +1,6 @@
 import type { CSSLength, LayoutProps } from "../system/types.js"
 import { normalizeUnit } from "../core/styleResolver.js"
+import { LAYOUT_DEFAULTS } from "../system/constants.js"
 
 export interface StackProps extends LayoutProps {
   gap?: CSSLength
@@ -7,7 +8,7 @@ export interface StackProps extends LayoutProps {
 
 export function Stack({
   children,
-  gap = 8,
+  gap = LAYOUT_DEFAULTS.GAP_DEFAULT,
   padding,
   margin,
   width,

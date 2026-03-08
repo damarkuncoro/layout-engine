@@ -6,6 +6,7 @@ export interface FlexProps extends LayoutProps {
   align?: string
   gap?: CSSLength
   direction?: "row" | "row-reverse" | "column" | "column-reverse"
+  tag?: string
 }
 
 /**
@@ -18,6 +19,7 @@ export function Flex({
   align,
   gap,
   direction = "row",
+  tag = "div",
   padding,
   margin,
   width,
@@ -39,7 +41,7 @@ export function Flex({
     ...style
   }
   return {
-    type: "div",
+    type: tag,
     props: {
       style: resolved,
       ...rest,

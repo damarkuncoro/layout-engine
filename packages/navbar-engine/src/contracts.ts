@@ -3,10 +3,21 @@ import { HeadlessNode, CSSLength, BreakpointKey } from "@damarkuncoro/layout-eng
 export type NavbarPosition = "static" | "sticky" | "fixed"
 export type NavbarVariant = "light" | "dark" | "transparent" | "solid"
 
+export interface NavMenuItem {
+  id: string
+  label: string
+  href?: string
+  icon?: any
+  badge?: string
+  dropdown?: NavMenuItem[]
+  isExternal?: boolean
+  isActive?: boolean
+}
+
 export interface NavbarSlots {
-  left?: any // Could be string, HeadlessNode, or array
-  center?: any
-  right?: any
+  left?: any // string, HeadlessNode, or array
+  center?: any | NavMenuItem[]
+  right?: any // string, HeadlessNode, or array
 }
 
 export interface NavbarProps extends NavbarSlots {
@@ -26,6 +37,7 @@ export interface NavbarProps extends NavbarSlots {
   onMenuToggle?: (e?: any) => void
   menuId?: string
   menuItemSelector?: string
+  activeItemId?: string // ID menu yang sedang aktif
   // Scroll-aware (dikontrol dari luar/UI)
   scrolled?: boolean
   shrinkOnScroll?: boolean
@@ -35,4 +47,24 @@ export interface NavbarProps extends NavbarSlots {
   // Spacing
   contentPadding?: CSSLength
   barPadding?: CSSLength
+}
+
+export interface NavbarMainBarProps extends NavbarSlots {
+  collapsed: boolean
+  menuId: string
+  menuOpen: boolean
+  onMenuToggle?: (e?: any) => void
+  barPadding?: CSSLength
+  centerAbsolute?: boolean
+  activeItemId?: string
+}
+
+export interface NavbarMobilePanelProps {
+  collapsed: boolean
+  center?: any
+  menuId: string
+  menuOpen: boolean
+  bgResolved: string
+  reduceMotion?: boolean
+  contained?: boolean
 }

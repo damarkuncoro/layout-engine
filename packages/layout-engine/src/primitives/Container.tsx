@@ -1,5 +1,6 @@
 import { normalizeUnit } from "../core/styleResolver.js"
 import type { LayoutProps, CSSLength } from "../system/types.js"
+import { LAYOUT_DEFAULTS } from "../system/constants.js"
 
 export interface ContainerProps extends LayoutProps {
   maxWidth?: CSSLength
@@ -11,9 +12,9 @@ export interface ContainerProps extends LayoutProps {
  */
 export function Container({
   children,
-  maxWidth = 1280,
+  maxWidth = LAYOUT_DEFAULTS.CONTAINER_MAX_WIDTH,
   centerContent = true,
-  padding = 4,
+  padding = LAYOUT_DEFAULTS.CONTAINER_PADDING,
   margin,
   width,
   height,
