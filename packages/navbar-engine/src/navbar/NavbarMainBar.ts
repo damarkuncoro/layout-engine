@@ -12,13 +12,86 @@ export function NavbarMainBar({
   onMenuToggle,
   barPadding,
   centerAbsolute,
-  activeItemId
+  activeItemId,
+  search,
+  actions
 }: NavbarMainBarProps) {
   const commonFlexProps = {
     justify: "space-between",
     align: "center",
     height: "100%",
     style: barPadding != null ? { padding: normalizeUnit(barPadding as any) } : undefined
+  }
+
+  // Helper untuk merender Search Bar
+  const renderSearch = (searchProps?: any) => {
+    if (!searchProps) return null
+    return Box({
+      tag: "div",
+      style: {
+        position: "relative",
+        flex: 1,
+        maxWidth: "320px",
+        margin: "0 24px"
+      },
+      children: Box({
+        tag: "input",
+        type: "text",
+        placeholder: searchProps.placeholder || "Search...",
+        value: searchProps.value,
+        onInput: (e: any) => searchProps.onChange?.(e.target.value),
+        style: {
+          width: "100%",
+          padding: "8px 16px",
+          paddingLeft: "36px",
+          borderRadius: theme.radiusFull,
+          border: `1px solid ${theme.border}`,
+          backgroundColor: theme.bgSubtle,
+          fontSize: theme.textSm,
+          outline: "none",
+          transition: NAVBAR_DEFAULTS.TRANSITION_FAST
+        }
+      })
+    })
+  }
+
+  // Helper untuk merender Action Buttons
+  const renderActions = (actionsList?: any[]) => {
+    if (!actionsList || actionsList.length === 0) return null
+    return Flex({
+      gap: "8px",
+      children: actionsList.map(action => 
+        Box({
+          tag: action.href ? "a" : "button",
+          key: action.id,
+          href: action.href,
+          onClick: action.onClick,
+          style: {
+            padding: "8px 16px",
+            borderRadius: theme.radiusMd,
+            fontSize: theme.textSm,
+            fontWeight: theme.fontSemibold,
+            cursor: "pointer",
+            textDecoration: "none",
+            border: action.variant === "outline" ? `1px solid ${theme.border}` : "none",
+            backgroundColor: action.variant === "primary" ? theme.primary : 
+                            action.variant === "secondary" ? theme.secondary : 
+                            "transparent",
+            color: action.variant === "primary" ? theme.primaryFg :
+                   action.variant === "secondary" ? theme.secondaryFg :
+                   "inherit",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            transition: NAVBAR_DEFAULTS.TRANSITION_FAST
+          },
+          children: [
+            action.icon ? Box({ children: action.icon }) : null,
+            action.label
+          ].filter(Boolean)
+        })
+      )
+    })
   }
 
   // Helper untuk merender menu item secara semantik
@@ -119,7 +192,9 @@ export function NavbarMainBar({
       children: [
         Box({ children: left }),
         !collapsed ? (centerContent ? Box({ children: centerContent }) : null) : null,
-        collapsed && centerContent
+        !collapsed ? renderSearch(search) : null,
+        !collapsed ? renderActions(actions) : null,
+        collapsed && (centerContent || search || actions)
           ? Box({
               tag: "button",
               role: "button",

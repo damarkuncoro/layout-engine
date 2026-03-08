@@ -30,7 +30,8 @@ export function Navbar(props: NavbarProps) {
     menuId = "navbar-menu",
     reduceMotion = false,
     contentPadding,
-    barPadding
+    barPadding,
+    activeItemId
   } = props
 
   const threshold =

@@ -5,13 +5,68 @@ import type { NavbarMobilePanelProps, NavMenuItem } from "../contracts.js"
 export function NavbarMobilePanel({
   collapsed,
   center,
+  search,
+  actions,
   menuId,
   menuOpen,
   bgResolved,
   reduceMotion,
   contained
 }: NavbarMobilePanelProps) {
-  if (!collapsed || !center) return null
+  if (!collapsed || (!center && !search && !actions)) return null
+
+  // Helper untuk merender Search Bar Mobile
+  const renderMobileSearch = (searchProps?: any) => {
+    if (!searchProps || !searchProps.showOnMobile) return null
+    return Box({
+      style: { padding: "12px 16px", borderBottom: `1px solid ${theme.border}` },
+      children: Box({
+        tag: "input",
+        placeholder: searchProps.placeholder || "Search...",
+        value: searchProps.value,
+        onInput: (e: any) => searchProps.onChange?.(e.target.value),
+        style: {
+          width: "100%",
+          padding: "10px 16px",
+          borderRadius: theme.radiusMd,
+          border: `1px solid ${theme.border}`,
+          backgroundColor: theme.bgSubtle,
+          fontSize: theme.textBase
+        }
+      })
+    })
+  }
+
+  // Helper untuk merender Actions Mobile
+  const renderMobileActions = (actionsList?: any[]) => {
+    if (!actionsList || actionsList.length === 0) return null
+    return Flex({
+      direction: "column",
+      gap: "8px",
+      style: { padding: "16px" },
+      children: actionsList.map(action => 
+        Box({
+          tag: action.href ? "a" : "button",
+          key: action.id,
+          href: action.href,
+          onClick: action.onClick,
+          style: {
+            width: "100%",
+            padding: "12px",
+            textAlign: "center",
+            borderRadius: theme.radiusMd,
+            fontSize: theme.textBase,
+            fontWeight: theme.fontSemibold,
+            textDecoration: "none",
+            backgroundColor: action.variant === "primary" ? theme.primary : theme.bgMuted,
+            color: action.variant === "primary" ? theme.primaryFg : theme.fg,
+            border: "none"
+          },
+          children: action.label
+        })
+      )
+    })
+  }
 
   // Helper untuk merender menu item di panel mobile
   const renderMobileMenu = (items: any) => {
@@ -93,8 +148,12 @@ export function NavbarMobilePanel({
   const mobileContent = renderMobileMenu(center)
 
   const panelContent = Box({
-    style: { padding: NAVBAR_DEFAULTS.BAR_PADDING },
-    children: mobileContent
+    style: { padding: "8px 0" },
+    children: [
+      renderMobileSearch(search),
+      mobileContent ? Box({ style: { padding: NAVBAR_DEFAULTS.BAR_PADDING }, children: mobileContent }) : null,
+      renderMobileActions(actions)
+    ].filter(Boolean)
   })
 
   return Box({
