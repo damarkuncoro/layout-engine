@@ -17,10 +17,29 @@ export interface NavMenuItem {
   dropdownWidth?: CSSLength
 }
 
+export interface NavbarSearchProps {
+  placeholder?: string
+  onChange?: (val: string) => void
+  onSearch?: (val: string) => void
+  value?: string
+  showOnMobile?: boolean
+}
+
+export interface NavbarAction {
+  id: string
+  label: string
+  onClick?: (e?: any) => void
+  href?: string
+  variant?: "primary" | "secondary" | "outline" | "ghost"
+  icon?: any
+}
+
 export interface NavbarSlots {
   left?: any // string, HeadlessNode, or array
   center?: any | NavMenuItem[]
   right?: any // string, HeadlessNode, or array
+  search?: NavbarSearchProps
+  actions?: NavbarAction[]
 }
 
 export interface NavbarProps extends NavbarSlots {
@@ -60,11 +79,15 @@ export interface NavbarMainBarProps extends NavbarSlots {
   barPadding?: CSSLength
   centerAbsolute?: boolean
   activeItemId?: string
+  search?: NavbarSearchProps
+  actions?: NavbarAction[]
 }
 
 export interface NavbarMobilePanelProps {
   collapsed: boolean
   center?: any
+  search?: NavbarSearchProps
+  actions?: NavbarAction[]
   menuId: string
   menuOpen: boolean
   bgResolved: string

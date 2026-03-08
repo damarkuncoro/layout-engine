@@ -60,17 +60,22 @@ export function Navbar(props: NavbarProps) {
     left,
     center,
     right,
+    search: props.search,
+    actions: props.actions,
     collapsed,
     menuId,
     menuOpen,
     onMenuToggle,
     barPadding,
-    centerAbsolute
+    centerAbsolute,
+    activeItemId
   })
 
   const mobilePanel = NavbarMobilePanel({
     collapsed,
     center,
+    search: props.search,
+    actions: props.actions,
     menuId,
     menuOpen,
     bgResolved,
