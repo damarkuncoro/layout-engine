@@ -14,6 +14,8 @@ export function NavbarMainBar({
   menuOpen,
   onMenuToggle,
   barPadding,
+  paddingY,
+  paddingX,
   centerAbsolute,
   activeItemId,
   search,
@@ -23,7 +25,13 @@ export function NavbarMainBar({
     justify: "space-between",
     align: "center",
     height: "100%",
-    style: barPadding != null ? { padding: normalizeUnit(barPadding as any) } : undefined
+    style: { 
+      paddingLeft: normalizeUnit(paddingX as any),
+      paddingRight: normalizeUnit(paddingX as any),
+      paddingTop: normalizeUnit(paddingY as any),
+      paddingBottom: normalizeUnit(paddingY as any),
+      ...(barPadding != null ? { padding: normalizeUnit(barPadding as any) } : {})
+    }
   }
 
   const centerContent = NavbarMenuItems({ items: center, activeItemId })

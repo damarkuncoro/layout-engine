@@ -31,6 +31,14 @@ export function Navbar(props: NavbarProps) {
     reduceMotion = false,
     contentPadding,
     barPadding,
+    paddingY = NAVBAR_DEFAULTS.PADDING_Y,
+    paddingX = NAVBAR_DEFAULTS.PADDING_X,
+    shrinkPaddingY = NAVBAR_DEFAULTS.SHRINK_PADDING_Y,
+    borderRadius = NAVBAR_DEFAULTS.BORDER_RADIUS,
+    isFloating = false,
+    floatingMarginTop = NAVBAR_DEFAULTS.FLOATING_MARGIN_TOP,
+    floatingWidth = NAVBAR_DEFAULTS.FLOATING_WIDTH,
+    floatingMaxWidth = NAVBAR_DEFAULTS.FLOATING_MAX_WIDTH,
     activeItemId
   } = props
 
@@ -47,6 +55,9 @@ export function Navbar(props: NavbarProps) {
       ? theme.bg ?? NAVBAR_DEFAULTS.FALLBACK_BG_LIGHT 
       : getBgForVariant(variant, background)) || NAVBAR_DEFAULTS.FALLBACK_BG_LIGHT
 
+  const floatingMode = isFloating && !scrolled
+  const effectiveBorderRadius = floatingMode ? (borderRadius || NAVBAR_DEFAULTS.FLOATING_BORDER_RADIUS) : borderRadius
+
   const rootStyle = getNavbarRootStyle({
     position,
     top,
@@ -54,6 +65,12 @@ export function Navbar(props: NavbarProps) {
     backgroundColor: bgResolved as string,
     elevation,
     border,
+    borderRadius: effectiveBorderRadius as any,
+    marginTop: floatingMode ? floatingMarginTop : undefined,
+    width: floatingMode ? floatingWidth : "100%",
+    maxWidth: floatingMode ? floatingMaxWidth : undefined,
+    left: floatingMode ? "50%" : undefined,
+    transform: floatingMode ? "translateX(-50%)" : undefined,
     style
   })
 
@@ -68,6 +85,8 @@ export function Navbar(props: NavbarProps) {
     menuOpen,
     onMenuToggle,
     barPadding,
+    paddingY: (scrolled && shrinkOnScroll) ? shrinkPaddingY : paddingY,
+    paddingX,
     centerAbsolute,
     activeItemId
   })

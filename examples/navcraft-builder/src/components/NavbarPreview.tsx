@@ -55,7 +55,7 @@ export const NavbarPreview = ({ config, viewport, showContent }: NavbarPreviewPr
     scrolled: isScrolled,
     shrinkOnScroll: config.shrinkOnScroll,
     solidOnScroll: config.style === 'glass',
-    viewportWidth: viewport === 'mobile' ? 375 : viewport === 'tablet' ? 768 : 1200,
+    viewportWidth: viewport === 'mobile' ? 375 : viewport === 'tablet' ? 767 : 1200,
     collapseAt: viewport === 'mobile' ? 'sm' : 'md',
     menuOpen: isOpen,
     onMenuToggle: () => setIsOpen(!isOpen),

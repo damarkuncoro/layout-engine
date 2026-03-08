@@ -66,9 +66,18 @@ export interface NavbarProps extends NavbarSlots {
   solidOnScroll?: boolean
   centerAbsolute?: boolean
   reduceMotion?: boolean
-  // Spacing
+  // Spacing & Appearance
   contentPadding?: CSSLength
   barPadding?: CSSLength
+  paddingY?: CSSLength
+  paddingX?: CSSLength
+  shrinkPaddingY?: CSSLength
+  borderRadius?: CSSLength
+  // Floating
+  isFloating?: boolean
+  floatingMarginTop?: CSSLength
+  floatingWidth?: CSSLength
+  floatingMaxWidth?: CSSLength
 }
 
 export interface NavbarMainBarProps extends NavbarSlots {
@@ -77,6 +86,8 @@ export interface NavbarMainBarProps extends NavbarSlots {
   menuOpen: boolean
   onMenuToggle?: (e?: any) => void
   barPadding?: CSSLength
+  paddingY?: CSSLength
+  paddingX?: CSSLength
   centerAbsolute?: boolean
   activeItemId?: string
   search?: NavbarSearchProps
