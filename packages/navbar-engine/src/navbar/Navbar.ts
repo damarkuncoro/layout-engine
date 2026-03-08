@@ -3,13 +3,14 @@ import type { NavbarProps } from "../contracts.js"
 import { getBgForVariant, getNavbarRootStyle } from "./utils.js"
 import { NavbarMainBar } from "./NavbarMainBar.js"
 import { NavbarMobilePanel } from "./NavbarMobilePanel.js"
+import { NAVBAR_DEFAULTS } from "../constants/defaults.js"
 
 export function Navbar(props: NavbarProps) {
   const {
     left,
     center,
     right,
-    height = 64,
+    height = NAVBAR_DEFAULTS.HEIGHT,
     position = "static",
     top = 0,
     variant = "light",
@@ -40,13 +41,13 @@ export function Navbar(props: NavbarProps) {
 
   const computedHeight =
     (scrolled && shrinkOnScroll 
-      ? normalizeUnit(typeof height === "number" ? Math.max(48, (height as number) - 8) : height) 
-      : normalizeUnit(height as any)) || "64px"
+      ? normalizeUnit(typeof height === "number" ? Math.max(NAVBAR_DEFAULTS.HEIGHT_SHRUNK, (height as number) - 8) : height) 
+      : normalizeUnit(height as any)) || `${NAVBAR_DEFAULTS.HEIGHT}px`
 
   const bgResolved =
     (variant === "transparent" && scrolled && solidOnScroll 
-      ? (theme as any).bg ?? "#ffffff" 
-      : getBgForVariant(variant, background)) || "#ffffff"
+      ? (theme as any).bg ?? NAVBAR_DEFAULTS.FALLBACK_BG_LIGHT 
+      : getBgForVariant(variant, background)) || NAVBAR_DEFAULTS.FALLBACK_BG_LIGHT
 
   const rootStyle = getNavbarRootStyle({
     position,

@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
 import { cn } from './lib/utils';
 import { NavbarPreview } from './components/NavbarPreview';
