@@ -17,13 +17,34 @@ export const generateLayoutEngineCode = (config: NavbarConfig) => {
     : "null"
   const contained = !config.fullWidth
   return `import React from "react"
-import { Box, Flex, ${presetImport} } from "@damarkuncoro/layout-engine-react"
+import { Box, Flex, Navbar, ${presetImport} } from "@damarkuncoro/layout-engine-react"
 
-export default function Navbar() {
+export default function MyNavbar() {
   const left = Box({ children: "${left}" })
-  const center = Flex({ gap: 12, children: [${centerItems.map(t => `Box({ children: "${t}" })`).join(", ")}] })
-  const right = ${cta}
-  return ${config.shrinkOnScroll ? `NavbarPreset({ contained: ${contained}, left, center, right, collapseAt: "md", shrinkOnScroll: true, barPadding: "${config.paddingY} ${config.paddingX}", centerAbsolute: ${config.alignment === 'center'}, solidOnScroll: ${config.style === 'glass' ? 'false' : 'true'} })` : `NavbarPreset({ contained: ${contained}, left, center, right, collapseAt: "md", barPadding: "${config.paddingY} ${config.paddingX}", centerAbsolute: ${config.alignment === 'center'} })`}
+  const center = [
+    ${config.links.map(l => `{ id: "${l.id}", label: "${l.label.replace(/"/g, '\\"')}", href: "${l.href}"${l.dropdown ? `, dropdown: [${l.dropdown.map(d => `{ id: "${d.id}", label: "${d.label.replace(/"/g, '\\"')}", href: "${d.href}" }`).join(", ")}]` : ""} }`).join(",\n    ")}
+  ]
+  const actions = ${config.showCta ? `[{ id: "cta", label: "${config.ctaText.replace(/"/g, '\\"')}", variant: "primary", href: "${config.ctaHref}" }]` : "[]"}
+  const search = ${config.showSearch ? `{ placeholder: "${config.searchPlaceholder.replace(/"/g, '\\"')}", showOnMobile: true }` : "undefined"}
+
+  return Navbar({
+    left,
+    center,
+    actions,
+    search,
+    alignment: "${config.alignment}",
+    position: "${config.sticky ? 'sticky' : 'static'}",
+    isFloating: ${config.style === 'floating'},
+    borderRadius: "${config.borderRadius}",
+    paddingX: "${config.paddingX}",
+    paddingY: "${config.paddingY}",
+    shrinkPaddingY: "${config.paddingYScrolled}",
+    shrinkOnScroll: ${config.shrinkOnScroll},
+    contained: ${contained},
+    variant: "${config.theme === 'dark' ? 'dark' : config.style === 'glass' ? 'transparent' : 'light'}",
+    solidOnScroll: ${config.style === 'glass'},
+    elevation: ${config.style === 'modern'}
+  })
 }
 `
 }

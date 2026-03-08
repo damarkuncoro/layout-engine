@@ -60,6 +60,24 @@ export const NavbarPreview = ({ config, viewport, showContent }: NavbarPreviewPr
     menuOpen: isOpen,
     onMenuToggle: () => setIsOpen(!isOpen),
     centerAbsolute: config.alignment === 'center',
+    alignment: config.alignment,
+    isFloating: config.style === 'floating',
+    borderRadius: config.borderRadius,
+    paddingX: config.paddingX,
+    paddingY: config.paddingY,
+    shrinkPaddingY: config.paddingYScrolled,
+    search: config.showSearch ? {
+      placeholder: config.searchPlaceholder,
+      showOnMobile: true
+    } : undefined,
+    actions: config.showCta ? [
+      {
+        id: 'cta',
+        label: config.ctaText,
+        variant: 'primary',
+        href: config.ctaHref
+      }
+    ] : [],
     left: (
       <div className="flex-shrink-0 flex items-center">
         {config.logoType === 'text' ? (
