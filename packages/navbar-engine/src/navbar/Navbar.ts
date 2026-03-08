@@ -1,8 +1,8 @@
 import { Container, Box, theme, breakpoints, normalizeUnit } from "@damarkuncoro/layout-engine"
 import type { NavbarProps } from "../contracts.js"
 import { getBgForVariant, getNavbarRootStyle, computeNavbarHeight } from "./utils.js"
-import { NavbarMainBar } from "./NavbarMainBar.js"
-import { NavbarMobilePanel } from "./NavbarMobilePanel.js"
+import { NavbarMainBar } from "./mainbar/index.js"
+import { NavbarMobilePanel } from "./mobilepanel/index.js"
 import { NAVBAR_DEFAULTS } from "../constants/defaults.js"
 
 export function Navbar(props: NavbarProps) {
