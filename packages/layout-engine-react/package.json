@@ -41,8 +41,8 @@
     "react-dom": "^18.0.0"
   },
   "dependencies": {
-    "@damarkuncoro/layout-engine": "^0.1.1",
-    "@damarkuncoro/navbar-engine": "^0.1.0"
+    "@damarkuncoro/layout-engine": "workspace:*",
+    "@damarkuncoro/navbar-engine": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.4.0",

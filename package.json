@@ -1,0 +1,9 @@
+{
+  "name": "layout-engine-monorepo",
+  "private": true,
+  "scripts": {
+    "install:all": "pnpm install",
+    "build:all": "pnpm -r run build",
+    "dev:builder": "pnpm --filter react-example run dev"
+  }
+}
