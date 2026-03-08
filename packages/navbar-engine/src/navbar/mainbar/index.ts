@@ -72,7 +72,7 @@ export function NavbarMainBar({
               children: "☰"
             } as any)
           : Box({ children: right })
-      ]
+      ].filter(item => item !== null)
     })
   }
 

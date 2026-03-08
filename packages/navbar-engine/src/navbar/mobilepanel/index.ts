@@ -26,7 +26,7 @@ export function NavbarMobilePanel({
       MobileSearch(search as any),
       mobileContent ? Box({ style: { padding: NAVBAR_DEFAULTS.BAR_PADDING }, children: mobileContent }) : null,
       MobileActions({ actions: actions as any })
-    ].filter(Boolean)
+    ].filter(item => item !== null)
   })
 
   return Box({

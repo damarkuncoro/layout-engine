@@ -3,6 +3,8 @@ import { NAVBAR_DEFAULTS } from "../../constants/defaults.js"
 import type { NavbarSearchProps } from "../../contracts.js"
 
 export function NavbarSearch(props: NavbarSearchProps) {
+  if (!props) return null
+  
   return Box({
     tag: "div",
     style: {
