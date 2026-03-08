@@ -83,6 +83,78 @@ export function Hero(props: HeroProps) {
     })
   }
 
+  if (pattern === "fullscreen") {
+    return Box({
+      tag: "section",
+      style: {
+        ...rootStyle,
+        height: height || "100vh",
+        minHeight: "auto",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "hidden"
+      },
+      children: [
+        visual ? Box({
+          style: {
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: 0,
+            objectFit: "cover"
+          },
+          children: visual
+        }) : null,
+        Box({
+          style: { position: "relative", zIndex: 1, width: "100%" },
+          children: Container({
+            children: content
+          })
+        })
+      ].filter(Boolean)
+    })
+  }
+
+  if (pattern === "overlap") {
+    return Box({
+      tag: "section",
+      style: rootStyle,
+      children: Container({
+        children: Stack({
+          style: { position: "relative" },
+          children: [
+            visualPart ? Box({
+              style: {
+                width: "100%",
+                height: "400px",
+                borderRadius: "16px",
+                overflow: "hidden"
+              },
+              children: visualPart
+            }) : null,
+            Box({
+              style: {
+                marginTop: "-100px",
+                marginLeft: isCollapsed ? "0" : "40px",
+                marginRight: isCollapsed ? "0" : "40px",
+                backgroundColor: background || "#fff",
+                padding: "40px",
+                borderRadius: "12px",
+                boxShadow: "0 20px 25px -5px rgba(0,0,0,0.1)",
+                position: "relative",
+                zIndex: 2
+              },
+              children: content
+            })
+          ].filter(Boolean)
+        })
+      })
+    })
+  }
+
   return Box({
     tag: "section",
     style: rootStyle,
