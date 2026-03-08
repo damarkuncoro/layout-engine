@@ -12,6 +12,9 @@ export interface NavMenuItem {
   dropdown?: NavMenuItem[]
   isExternal?: boolean
   isActive?: boolean
+  // Dropdown specific props (optional)
+  dropdownVariant?: "light" | "dark" | "glass"
+  dropdownWidth?: CSSLength
 }
 
 export interface NavbarSlots {

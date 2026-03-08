@@ -24,5 +24,8 @@ export const NAVBAR_DEFAULTS = {
   FALLBACK_BG_DARK: "#111827",
   FALLBACK_BG_LIGHT: "#ffffff",
   MOBILE_MENU_MAX_HEIGHT: "400px",
-  TRANSITION_PANEL: "max-height 220ms ease, opacity 140ms ease, transform 180ms ease"
+  TRANSITION_PANEL: "max-height 220ms ease, opacity 140ms ease, transform 180ms ease",
+  GAP_DEFAULT: "12px",
+  SHADOW_MD: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+  TRANSITION_FAST: "150ms ease"
 }
