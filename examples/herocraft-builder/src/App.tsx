@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { HeroPreview } from './components/HeroPreview';
 import { DEFAULT_HERO_CONFIG, HeroConfig, HeroPattern, HeroStyle } from './types';
+import { generateLayoutEngineCode, generateTailwindCode } from './utils/codeGenerator';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { 
   Monitor, 
   Smartphone, 
@@ -11,17 +14,32 @@ import {
   Palette,
   Type,
   ExternalLink,
-  ChevronDown
+  ChevronDown,
+  X,
+  Code2,
+  Copy,
+  Check
 } from 'lucide-react';
 
 function App() {
   const [config, setConfig] = useState<HeroConfig>(DEFAULT_HERO_CONFIG);
   const [viewport, setViewport] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
   const [activeTab, setActiveTab] = useState<'layout' | 'style' | 'content'>('layout');
+  const [showCode, setShowCode] = useState(false);
+  const [codeType, setCodeType] = useState<'le' | 'tailwind'>('le');
+  const [copied, setCopied] = useState(false);
 
   const updateConfig = (updates: Partial<HeroConfig>) => {
     setConfig(prev => ({ ...prev, ...updates }));
   };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const code = codeType === 'le' ? generateLayoutEngineCode(config) : generateTailwindCode(config);
 
   return (
     <div className="flex h-screen bg-gray-100 font-sans text-gray-900">
@@ -56,7 +74,7 @@ function App() {
                   <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Patterns</label>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
-                  {(['split', 'centered'] as HeroPattern[]).map((p) => (
+                  {(['split', 'centered', 'fullscreen', 'overlap'] as HeroPattern[]).map((p) => (
                     <button
                       key={p}
                       onClick={() => updateConfig({ pattern: p })}
@@ -115,8 +133,12 @@ function App() {
                     <input type="color" value={config.backgroundColor} onChange={(e) => updateConfig({ backgroundColor: e.target.value })} className="w-8 h-8 rounded cursor-pointer" />
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Primary</span>
+                    <span className="text-sm font-medium">Primary Color</span>
                     <input type="color" value={config.primaryColor} onChange={(e) => updateConfig({ primaryColor: e.target.value })} className="w-8 h-8 rounded cursor-pointer" />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">Text Color</span>
+                    <input type="color" value={config.textColor} onChange={(e) => updateConfig({ textColor: e.target.value })} className="w-8 h-8 rounded cursor-pointer" />
                   </div>
                   <div>
                     <div className="flex justify-between mb-2">
@@ -154,16 +176,34 @@ function App() {
                   <ImageIcon size={16} className="text-indigo-600" />
                   <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Visual Asset</label>
                 </div>
-                <input type="text" value={config.visualUrl} onChange={(e) => updateConfig({ visualUrl: e.target.value })} className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Image URL..." />
+                <div className="flex p-1 bg-gray-100 rounded-lg mb-2">
+                  {(['image', 'none'] as const).map((t) => (
+                    <button
+                      key={t}
+                      onClick={() => updateConfig({ visualType: t })}
+                      className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all capitalize ${
+                        config.visualType === t ? "bg-white shadow-sm text-indigo-600" : "text-gray-500 hover:text-gray-700"
+                      }`}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+                {config.visualType === 'image' && (
+                  <input type="text" value={config.visualUrl} onChange={(e) => updateConfig({ visualUrl: e.target.value })} className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Image URL..." />
+                )}
               </section>
             </div>
           )}
         </div>
 
         <div className="p-4 border-t border-gray-100 bg-gray-50">
-          <button className="w-full py-3 bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all flex items-center justify-center gap-2">
-            <ExternalLink size={18} />
-            Export Code
+          <button 
+            onClick={() => setShowCode(true)}
+            className="w-full py-3 bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all flex items-center justify-center gap-2"
+          >
+            <Code2 size={18} />
+            View Code
           </button>
         </div>
       </aside>
@@ -200,6 +240,66 @@ function App() {
           <HeroPreview config={config} viewport={viewport} />
         </div>
       </main>
+
+      {/* Code Modal */}
+      {showCode && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-8">
+          <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[80vh] flex flex-col shadow-2xl overflow-hidden">
+            <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <h2 className="text-xl font-bold">Export Code</h2>
+                <div className="flex bg-gray-100 p-1 rounded-lg">
+                  <button 
+                    onClick={() => setCodeType('le')}
+                    className={`px-4 py-1.5 text-xs font-bold rounded-md transition-all ${codeType === 'le' ? "bg-white shadow-sm text-indigo-600" : "text-gray-500 hover:text-gray-700"}`}
+                  >
+                    Layout Engine
+                  </button>
+                  <button 
+                    onClick={() => setCodeType('tailwind')}
+                    className={`px-4 py-1.5 text-xs font-bold rounded-md transition-all ${codeType === 'tailwind' ? "bg-white shadow-sm text-indigo-600" : "text-gray-500 hover:text-gray-700"}`}
+                  >
+                    Tailwind CSS
+                  </button>
+                </div>
+              </div>
+              <button onClick={() => setShowCode(false)} className="p-2 hover:bg-gray-100 rounded-full transition-all">
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="flex-1 overflow-hidden relative group">
+              <div className="absolute top-4 right-4 z-10">
+                <button 
+                  onClick={() => copyToClipboard(code)}
+                  className="p-2 bg-white/10 hover:bg-white/20 text-white rounded-lg backdrop-blur-md transition-all flex items-center gap-2 text-xs font-bold"
+                >
+                  {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
+                  {copied ? 'Copied!' : 'Copy Code'}
+                </button>
+              </div>
+              <div className="h-full overflow-auto">
+                <SyntaxHighlighter 
+                  language="tsx" 
+                  style={vscDarkPlus}
+                  customStyle={{ margin: 0, height: '100%', fontSize: '13px' }}
+                >
+                  {code}
+                </SyntaxHighlighter>
+              </div>
+            </div>
+            
+            <div className="p-6 bg-gray-50 border-t border-gray-100 flex justify-end">
+              <button 
+                onClick={() => setShowCode(false)}
+                className="px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

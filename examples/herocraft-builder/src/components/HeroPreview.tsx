@@ -37,11 +37,12 @@ export const HeroPreview = ({ config, viewport }: HeroPreviewProps) => {
       onClick: () => console.log('Action clicked:', action.label)
     })),
     background: config.backgroundColor,
-    paddingY: config.paddingY,
+    paddingY: config.pattern === 'fullscreen' ? '0' : config.paddingY,
     paddingX: config.paddingX,
     viewportWidth,
     reverse: config.reverse,
     style: {
+      color: config.textColor,
       ...(config.style === 'brutalist' && {
         border: '4px solid #000',
         boxShadow: '12px 12px 0px 0px #000',
@@ -50,6 +51,9 @@ export const HeroPreview = ({ config, viewport }: HeroPreviewProps) => {
         backdropFilter: 'blur(12px)',
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
         border: '1px solid rgba(255, 255, 255, 0.2)',
+      }),
+      ...(config.pattern === 'fullscreen' && {
+        height: '100%',
       })
     }
   });
