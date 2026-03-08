@@ -30,6 +30,7 @@ export function NavbarMainBar({
       paddingRight: normalizeUnit(paddingX as any),
       paddingTop: normalizeUnit(paddingY as any),
       paddingBottom: normalizeUnit(paddingY as any),
+      transition: "padding 300ms ease",
       ...(barPadding != null ? { padding: normalizeUnit(barPadding as any) } : {})
     }
   }

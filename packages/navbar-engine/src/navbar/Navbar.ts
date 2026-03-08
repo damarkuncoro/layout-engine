@@ -71,6 +71,8 @@ export function Navbar(props: NavbarProps) {
     maxWidth: floatingMode ? floatingMaxWidth : undefined,
     left: floatingMode ? "50%" : undefined,
     transform: floatingMode ? "translateX(-50%)" : undefined,
+    zIndex: position === "sticky" || position === "fixed" ? 1000 : undefined,
+    transition: reduceMotion ? "none" : "min-height 300ms ease, padding 300ms ease, background-color 300ms ease, box-shadow 300ms ease, transform 300ms ease, margin 300ms ease, border-radius 300ms ease, width 300ms ease",
     style
   })
 

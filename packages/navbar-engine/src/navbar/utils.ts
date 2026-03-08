@@ -30,6 +30,8 @@ interface RootStyleProps {
   maxWidth?: number | string
   left?: string
   transform?: string
+  zIndex?: number | string
+  transition?: string
   style?: Record<string, any>
 }
 
@@ -58,6 +60,8 @@ export const getNavbarRootStyle = ({
   maxWidth,
   left,
   transform,
+  zIndex,
+  transition,
   style
 }: RootStyleProps) => ({
   position,
@@ -72,5 +76,7 @@ export const getNavbarRootStyle = ({
   maxWidth: maxWidth ? normalizeUnit(maxWidth as any) : undefined,
   left,
   transform,
+  zIndex,
+  transition,
   ...style
 })
