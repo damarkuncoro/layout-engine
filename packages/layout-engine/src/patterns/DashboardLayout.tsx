@@ -8,6 +8,7 @@ import type { CSSLength, ResponsiveValue } from "../system/types.js"
 export interface DashboardLayoutProps extends DashboardLayoutContract {
   sidebarWidth?: ResponsiveValue<CSSLength>
   headerHeight?: string | number
+  height?: string | number
   viewportWidth?: number
   style?: Record<string, any>
 }
@@ -21,18 +22,19 @@ export function DashboardLayout({
   children,
   sidebarWidth = 280,
   headerHeight = 64,
+  height = "100vh",
   viewportWidth = 1024,
   style
 }: DashboardLayoutProps) {
   const resolvedSidebarWidth = normalizeUnit(resolveResponsive(sidebarWidth, viewportWidth) ?? 280)
 
   return Flex({
-    style: { height: "100vh", overflow: "hidden", ...style },
+    style: { height, overflow: "hidden", ...style },
     children: [
       // Sidebar Area
-      Box({ 
+      (resolvedSidebarWidth !== '0px') && Box({ 
         width: resolvedSidebarWidth, 
-        style: { height: "100%", flexShrink: 0 },
+        style: { height: "100%", flexShrink: 0, overflow: 'hidden' },
         children: sidebar 
       }),
       
@@ -50,7 +52,7 @@ export function DashboardLayout({
           
           // Scrollable Content
           Box({
-            style: { flex: 1, overflowY: "auto", position: "relative" },
+            style: { flex: 1, overflowY: "auto", position: "relative", padding: "24px" },
             children
           })
         ]

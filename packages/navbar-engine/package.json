@@ -1,7 +1,8 @@
+
 {
   "name": "@damarkuncoro/navbar-engine",
-  "version": "0.1.2",
-  "description": "Headless navbar engine with slots and variants",
+  "version": "0.1.0",
+  "description": "Headless navbar engine with composition patterns",
   "license": "MIT",
   "type": "module",
   "main": "./lib/cjs/index.js",
@@ -10,13 +11,6 @@
   "sideEffects": false,
   "files": [
     "lib"
-  ],
-  "keywords": [
-    "navbar",
-    "navigation",
-    "headless",
-    "ui",
-    "layout"
   ],
   "engines": {
     "node": ">=18"
@@ -29,9 +23,6 @@
     },
     "./package.json": "./package.json"
   },
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:cjs": "tsc -p tsconfig.cjs.json",
@@ -43,7 +34,6 @@
     "@damarkuncoro/layout-engine": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.4.0",
-    "@damarkuncoro/layout-engine": "workspace:*"
+    "typescript": "^5.4.0"
   }
 }
