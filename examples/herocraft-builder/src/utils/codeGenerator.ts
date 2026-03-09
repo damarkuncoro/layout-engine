@@ -1,8 +1,34 @@
 import { HeroConfig } from '../types';
 
 export const generateLayoutEngineCode = (config: HeroConfig) => {
+  const isCompositional = ['background', 'video', 'cards', 'app-preview'].includes(config.variant);
+
+  if (isCompositional) {
+    return `import React from "react"
+import { Container, Hero } from "@damarkuncoro/hero-engine-react"
+
+export default function MyHero() {
+  return Hero({
+    minHeight: "100vh",
+    style: { color: "${config.textColor}" },
+    children: [
+      ${config.variant === 'video' ? `Hero.Background({ video: "${config.videoUrl || ''}", overlay: ${config.visualOverlay} }),` : `Hero.Background({ image: "${config.visualUrl || ''}", overlay: ${config.visualOverlay} }),`}
+      Container({
+        children: [
+          Hero.Title({ children: "${config.title.replace(/"/g, '\\"')}" }),
+          Hero.Description({ children: "${config.description.replace(/"/g, '\\"')}" }),
+          ${config.variant === 'stats' ? `Hero.Stats({ items: [${config.stats.map(s => `{ label: "${s.label}", value: "${s.value}" }`).join(", ")}] }),` : ''}
+          Hero.Actions({ items: [${config.actions.map(a => `{ label: "${a.label}", variant: "${a.variant}" }`).join(", ")}] })
+        ]
+      })
+    ]
+  })
+}
+`
+  }
+
   return `import React from "react"
-import { Box, Hero } from "@damarkuncoro/hero-engine-react"
+import { Hero } from "@damarkuncoro/hero-engine-react"
 
 export default function MyHero() {
   return Hero({
@@ -13,11 +39,14 @@ export default function MyHero() {
     actions: [
       ${config.actions.map(a => `{ id: "${a.id}", label: "${a.label.replace(/"/g, '\\"')}", href: "${a.href}", variant: "${a.variant}" }`).join(",\n      ")}
     ],
+    ${config.variant === 'stats' ? `stats: [${config.stats.map(s => `{ label: "${s.label}", value: "${s.value}" }`).join(", ")}],` : ''}
     background: "${config.backgroundColor}",
+    visualOverlay: ${config.visualOverlay},
     paddingY: "${config.paddingY}",
     paddingX: "${config.paddingX}",
     reverse: ${config.reverse},
     style: {
+      color: "${config.textColor}",
       borderRadius: "${config.borderRadius}",
       ${config.style === 'brutalist' ? 'border: "4px solid #000", boxShadow: "12px 12px 0px 0px #000"' : ''}
     }

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { HeroPreview } from './components/HeroPreview';
-import { DEFAULT_HERO_CONFIG, HeroConfig, HeroPattern, HeroStyle } from './types';
+import { DEFAULT_HERO_CONFIG, HeroStyle } from './types';
 import { generateLayoutEngineCode, generateTailwindCode } from './utils/codeGenerator';
+import { useHeroConfig } from './hooks/useHeroConfig';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { 
@@ -13,25 +14,29 @@ import {
   Image as ImageIcon,
   Palette,
   Type,
-  ExternalLink,
-  ChevronDown,
   X,
   Code2,
   Copy,
   Check
 } from 'lucide-react';
 
+// Import Layout Engine Components
+import { 
+  Box, 
+  Flex, 
+  Stack, 
+  DashboardLayout,
+  renderNodeToReact
+} from "@damarkuncoro/layout-engine-react";
+import { Sidebar } from "@damarkuncoro/sidebar-engine";
+
 function App() {
-  const [config, setConfig] = useState<HeroConfig>(DEFAULT_HERO_CONFIG);
+  const { config, updateConfig } = useHeroConfig(DEFAULT_HERO_CONFIG);
   const [viewport, setViewport] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
   const [activeTab, setActiveTab] = useState<'layout' | 'style' | 'content'>('layout');
   const [showCode, setShowCode] = useState(false);
   const [codeType, setCodeType] = useState<'le' | 'tailwind'>('le');
   const [copied, setCopied] = useState(false);
-
-  const updateConfig = (updates: Partial<HeroConfig>) => {
-    setConfig(prev => ({ ...prev, ...updates }));
-  };
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -41,244 +46,362 @@ function App() {
 
   const code = codeType === 'le' ? generateLayoutEngineCode(config) : generateTailwindCode(config);
 
-  return (
-    <div className="flex h-screen bg-gray-100 font-sans text-gray-900">
-      {/* Sidebar */}
-      <aside className="w-80 bg-white border-r border-gray-200 flex flex-col shadow-sm">
-        <div className="p-6 border-b border-gray-100 flex items-center gap-3">
-          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">H</div>
-          <h1 className="text-xl font-bold tracking-tight text-gray-800">HeroCraft</h1>
-        </div>
+  // --- Sub-layouts ---
 
-        {/* Tabs */}
-        <div className="flex p-1 bg-gray-100 m-4 rounded-xl">
-          {(['layout', 'style', 'content'] as const).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all capitalize ${
-                activeTab === tab ? "bg-white shadow-sm text-indigo-600" : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
+  const sidebarNode = Sidebar({
+    background: '#fff',
+    children: [
+      Sidebar.Header({
+        children: (
+          <Flex align="center" gap="12px">
+            <Box style={{ width: '32px', height: '32px', backgroundColor: '#4f46e5', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 'bold' }}>
+              H
+            </Box>
+            <Box tag="h1" style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#1f2937', margin: 0 }}>HeroCraft</Box>
+          </Flex>
+        )
+      }),
 
-        <div className="flex-1 overflow-y-auto p-6 space-y-8">
-          {activeTab === 'layout' && (
-            <div className="space-y-6">
-              <section className="space-y-3">
-                <div className="flex items-center gap-2 mb-2">
-                  <Layout size={16} className="text-indigo-600" />
-                  <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Patterns</label>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  {(['split', 'centered', 'fullscreen', 'overlap'] as HeroPattern[]).map((p) => (
-                    <button
-                      key={p}
-                      onClick={() => updateConfig({ pattern: p })}
-                      className={`px-3 py-2 text-sm rounded-lg border-2 transition-all capitalize ${
-                        config.pattern === p ? "border-indigo-600 bg-indigo-50 text-indigo-700" : "border-gray-100 hover:border-gray-200"
-                      }`}
-                    >
-                      {p}
-                    </button>
-                  ))}
-                </div>
-              </section>
+      Sidebar.Group({
+        title: "Navigation",
+        children: [
+          Sidebar.Item({ 
+            label: "Layout", 
+            icon: <Layout size={18} />, 
+            active: activeTab === 'layout',
+            onClick: () => setActiveTab('layout')
+          } as any),
+          Sidebar.Item({ 
+            label: "Style", 
+            icon: <Palette size={18} />, 
+            active: activeTab === 'style',
+            onClick: () => setActiveTab('style')
+          } as any),
+          Sidebar.Item({ 
+            label: "Content", 
+            icon: <Type size={18} />, 
+            active: activeTab === 'content',
+            onClick: () => setActiveTab('content')
+          } as any)
+        ]
+      }),
 
-              <section className="space-y-3">
-                <div className="flex items-center gap-2 mb-2">
-                  <Settings2 size={16} className="text-indigo-600" />
-                  <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Base Style</label>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  {(['modern', 'glass', 'brutalist', 'minimal'] as HeroStyle[]).map((s) => (
-                    <button
-                      key={s}
-                      onClick={() => updateConfig({ style: s })}
-                      className={`px-3 py-2 text-sm rounded-lg border-2 transition-all capitalize ${
-                        config.style === s ? "border-indigo-600 bg-indigo-50 text-indigo-700" : "border-gray-100 hover:border-gray-200"
-                      }`}
-                    >
-                      {s}
-                    </button>
-                  ))}
-                </div>
-              </section>
+      <Box key="content" style={{ flex: 1, overflowY: 'auto', padding: '24px', borderTop: '1px solid #f3f4f6' }}>
+        {activeTab === 'layout' && (
+          <Stack gap="24px">
+            <Box tag="section">
+              <Flex gap="8px" align="center" style={{ marginBottom: '12px' }}>
+                <Layout size={16} color="#4f46e5" />
+                <Box style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Layout Variants</Box>
+              </Flex>
+              <Box style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                {[
+                  { id: 'split', label: 'Split Hero' },
+                  { id: 'centered', label: 'Centered Hero' },
+                  { id: 'fullscreen', label: 'Fullscreen' },
+                  { id: 'background', label: 'Background Image' },
+                  { id: 'video', label: 'Video Background' },
+                  { id: 'product', label: 'Product Showcase' },
+                  { id: 'minimal', label: 'Minimal Hero' },
+                  { id: 'form', label: 'Hero with Form' },
+                  { id: 'stats', label: 'Hero with Stats' },
+                  { id: 'illustration', label: 'Illustration Hero' },
+                  { id: 'cards', label: 'Card Hero' },
+                  { id: 'app-preview', label: 'App Preview' }
+                ].map((v) => (
+                  <Box 
+                    tag="button"
+                    key={v.id}
+                    onClick={() => updateConfig({ variant: v.id as any })}
+                    style={{ 
+                      padding: '8px 12px', 
+                      fontSize: '10px', 
+                      fontWeight: 'bold', 
+                      borderRadius: '8px', 
+                      border: config.variant === v.id ? '2px solid #4f46e5' : '2px solid #f3f4f6',
+                      backgroundColor: config.variant === v.id ? '#eef2ff' : '#fff',
+                      color: config.variant === v.id ? '#4338ca' : '#1f2937',
+                      textAlign: 'left',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {v.label}
+                  </Box>
+                ))}
+              </Box>
+            </Box>
 
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-                <span className="text-sm font-medium">Reverse Layout</span>
-                <button 
-                  onClick={() => updateConfig({ reverse: !config.reverse })}
-                  className={`w-10 h-5 rounded-full transition-colors relative ${config.reverse ? "bg-indigo-600" : "bg-gray-200"}`}
-                >
-                  <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${config.reverse ? "left-6" : "left-1"}`} />
-                </button>
-              </div>
-            </div>
-          )}
+            <Box tag="section">
+              <Flex gap="8px" align="center" style={{ marginBottom: '12px' }}>
+                <Settings2 size={16} color="#4f46e5" />
+                <Box style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Base Style</Box>
+              </Flex>
+              <Box style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                {(['modern', 'glass', 'brutalist', 'minimal'] as HeroStyle[]).map((s) => (
+                  <Box 
+                    tag="button"
+                    key={s}
+                    onClick={() => updateConfig({ style: s })}
+                    style={{ 
+                      padding: '8px 12px', 
+                      fontSize: '0.875rem', 
+                      borderRadius: '8px', 
+                      border: config.style === s ? '2px solid #4f46e5' : '2px solid #f3f4f6',
+                      backgroundColor: config.style === s ? '#eef2ff' : '#fff',
+                      color: config.style === s ? '#4338ca' : '#1f2937',
+                      textTransform: 'capitalize',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {s}
+                  </Box>
+                ))}
+              </Box>
+            </Box>
 
-          {activeTab === 'style' && (
-            <div className="space-y-6">
-              <section className="space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Palette size={16} className="text-indigo-600" />
-                  <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Colors & Radius</label>
-                </div>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Background</span>
-                    <input type="color" value={config.backgroundColor} onChange={(e) => updateConfig({ backgroundColor: e.target.value })} className="w-8 h-8 rounded cursor-pointer" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Primary Color</span>
-                    <input type="color" value={config.primaryColor} onChange={(e) => updateConfig({ primaryColor: e.target.value })} className="w-8 h-8 rounded cursor-pointer" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Text Color</span>
-                    <input type="color" value={config.textColor} onChange={(e) => updateConfig({ textColor: e.target.value })} className="w-8 h-8 rounded cursor-pointer" />
-                  </div>
-                  <div>
-                    <div className="flex justify-between mb-2">
-                      <span className="text-sm font-medium">Border Radius</span>
-                      <span className="text-xs text-gray-400">{config.borderRadius}</span>
-                    </div>
-                    <input type="range" min="0" max="3" step="0.1" value={parseFloat(config.borderRadius)} onChange={(e) => updateConfig({ borderRadius: `${e.target.value}rem` })} className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" />
-                  </div>
-                </div>
-              </section>
-            </div>
-          )}
+            <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', backgroundColor: '#f9fafb', borderRadius: '12px' }}>
+              <Box tag="span" style={{ fontSize: '0.875rem', fontWeight: 500 }}>Reverse Layout</Box>
+              <Box 
+                tag="button" 
+                onClick={() => updateConfig({ reverse: !config.reverse })}
+                style={{ 
+                  width: '40px', 
+                  height: '20px', 
+                  borderRadius: '999px', 
+                  border: 'none',
+                  position: 'relative',
+                  cursor: 'pointer',
+                  backgroundColor: config.reverse ? '#4f46e5' : '#e5e7eb'
+                }}
+              >
+                <Box style={{ 
+                  position: 'absolute', 
+                  top: '4px', 
+                  left: config.reverse ? '24px' : '4px', 
+                  width: '12px', 
+                  height: '12px', 
+                  backgroundColor: '#fff', 
+                  borderRadius: '50%', 
+                  transition: 'all 0.2s' 
+                }} />
+              </Box>
+            </Box>
+          </Stack>
+        )}
 
-          {activeTab === 'content' && (
-            <div className="space-y-6">
-              <section className="space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Type size={16} className="text-indigo-600" />
-                  <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Text Content</label>
-                </div>
-                <div className="space-y-3">
-                  <div className="space-y-1">
-                    <span className="text-xs text-gray-500 font-medium">Title</span>
-                    <textarea value={config.title} onChange={(e) => updateConfig({ title: e.target.value })} className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none resize-none h-20" />
-                  </div>
-                  <div className="space-y-1">
-                    <span className="text-xs text-gray-500 font-medium">Description</span>
-                    <textarea value={config.description} onChange={(e) => updateConfig({ description: e.target.value })} className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none resize-none h-24" />
-                  </div>
-                </div>
-              </section>
+        {activeTab === 'style' && (
+          <Stack gap="24px">
+            <Box tag="section">
+              <Flex gap="8px" align="center" style={{ marginBottom: '16px' }}>
+                <Palette size={16} color="#4f46e5" />
+                <Box style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Colors & Radius</Box>
+              </Flex>
+              <Stack gap="16px">
+                <Flex align="center" justify="space-between">
+                  <Box tag="span" style={{ fontSize: '0.875rem', fontWeight: 500 }}>Background</Box>
+                  <input type="color" value={config.backgroundColor} onChange={(e) => updateConfig({ backgroundColor: e.target.value })} style={{ width: '32px', height: '32px', border: 'none', borderRadius: '4px', cursor: 'pointer' }} />
+                </Flex>
+                <Flex align="center" justify="space-between">
+                  <Box tag="span" style={{ fontSize: '0.875rem', fontWeight: 500 }}>Primary Color</Box>
+                  <input type="color" value={config.primaryColor} onChange={(e) => updateConfig({ primaryColor: e.target.value })} style={{ width: '32px', height: '32px', border: 'none', borderRadius: '4px', cursor: 'pointer' }} />
+                </Flex>
+                <Flex align="center" justify="space-between">
+                  <Box tag="span" style={{ fontSize: '0.875rem', fontWeight: 500 }}>Text Color</Box>
+                  <input type="color" value={config.textColor} onChange={(e) => updateConfig({ textColor: e.target.value })} style={{ width: '32px', height: '32px', border: 'none', borderRadius: '4px', cursor: 'pointer' }} />
+                </Flex>
+                <Box>
+                  <Flex justify="space-between" style={{ marginBottom: '8px' }}>
+                    <Box tag="span" style={{ fontSize: '0.875rem', fontWeight: 500 }}>Border Radius</Box>
+                    <Box tag="span" style={{ fontSize: '0.75rem', color: '#9ca3af' }}>{config.borderRadius}</Box>
+                  </Flex>
+                  <input type="range" min="0" max="3" step="0.1" value={parseFloat(config.borderRadius)} onChange={(e) => updateConfig({ borderRadius: `${e.target.value}rem` })} style={{ width: '100%', accentColor: '#4f46e5' }} />
+                </Box>
+              </Stack>
+            </Box>
+          </Stack>
+        )}
 
-              <section className="space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <ImageIcon size={16} className="text-indigo-600" />
-                  <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Visual Asset</label>
-                </div>
-                <div className="flex p-1 bg-gray-100 rounded-lg mb-2">
-                  {(['image', 'none'] as const).map((t) => (
-                    <button
-                      key={t}
-                      onClick={() => updateConfig({ visualType: t })}
-                      className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all capitalize ${
-                        config.visualType === t ? "bg-white shadow-sm text-indigo-600" : "text-gray-500 hover:text-gray-700"
-                      }`}
-                    >
-                      {t}
-                    </button>
-                  ))}
-                </div>
-                {config.visualType === 'image' && (
-                  <input type="text" value={config.visualUrl} onChange={(e) => updateConfig({ visualUrl: e.target.value })} className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Image URL..." />
-                )}
-              </section>
-            </div>
-          )}
-        </div>
+        {activeTab === 'content' && (
+          <Stack gap="24px">
+            <Box tag="section">
+              <Flex gap="8px" align="center" style={{ marginBottom: '16px' }}>
+                <Type size={16} color="#4f46e5" />
+                <Box style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Text Content</Box>
+              </Flex>
+              <Stack gap="12px">
+                <Stack gap="4px">
+                  <Box tag="span" style={{ fontSize: '0.75rem', fontWeight: 500, color: '#6b7280' }}>Title</Box>
+                  <textarea value={config.title} onChange={(e) => updateConfig({ title: e.target.value })} style={{ width: '100%', padding: '8px 12px', backgroundColor: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '8px', fontSize: '0.875rem', minHeight: '80px', outline: 'none' }} />
+                </Stack>
+                <Stack gap="4px">
+                  <Box tag="span" style={{ fontSize: '0.75rem', fontWeight: 500, color: '#6b7280' }}>Description</Box>
+                  <textarea value={config.description} onChange={(e) => updateConfig({ description: e.target.value })} style={{ width: '100%', padding: '8px 12px', backgroundColor: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '8px', fontSize: '0.875rem', minHeight: '96px', outline: 'none' }} />
+                </Stack>
+              </Stack>
+            </Box>
 
-        <div className="p-4 border-t border-gray-100 bg-gray-50">
-          <button 
+            <Box tag="section">
+              <Flex gap="8px" align="center" style={{ marginBottom: '16px' }}>
+                <ImageIcon size={16} color="#4f46e5" />
+                <Box style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Visual Asset</Box>
+              </Flex>
+              <Box style={{ display: 'flex', padding: '4px', backgroundColor: '#f3f4f6', borderRadius: '8px', marginBottom: '8px' }}>
+                {(['image', 'none'] as const).map((t) => (
+                  <Box 
+                    tag="button"
+                    key={t}
+                    onClick={() => updateConfig({ visualType: t })}
+                    style={{ 
+                      flex: 1, 
+                      padding: '6px 0', 
+                      fontSize: '0.75rem', 
+                      fontWeight: 'bold', 
+                      borderRadius: '6px', 
+                      border: 'none',
+                      cursor: 'pointer',
+                      backgroundColor: config.visualType === t ? '#fff' : 'transparent',
+                      color: config.visualType === t ? '#4f46e5' : '#6b7280',
+                      textTransform: 'capitalize'
+                    }}
+                  >
+                    {t}
+                  </Box>
+                ))}
+              </Box>
+              {config.visualType === 'image' && (
+                <input type="text" value={config.visualUrl} onChange={(e) => updateConfig({ visualUrl: e.target.value })} placeholder="Image URL..." style={{ width: '100%', padding: '8px 12px', backgroundColor: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '8px', fontSize: '0.75rem', outline: 'none' }} />
+              )}
+            </Box>
+          </Stack>
+        )}
+      </Box>,
+
+      Sidebar.Footer({
+        children: (
+          <Box 
+            tag="button"
             onClick={() => setShowCode(true)}
-            className="w-full py-3 bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all flex items-center justify-center gap-2"
+            style={{ 
+              width: '100%', 
+              padding: '12px 0', 
+              backgroundColor: '#4f46e5', 
+              color: '#fff', 
+              borderRadius: '12px', 
+              fontWeight: 'bold', 
+              fontSize: '0.875rem', 
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              boxShadow: '0 10px 15px -3px rgba(79, 70, 229, 0.1)'
+            }}
           >
             <Code2 size={18} />
             View Code
-          </button>
-        </div>
-      </aside>
+          </Box>
+        )
+      })
+    ]
+  });
 
-      {/* Main Preview Area */}
-      <main className="flex-1 flex flex-col relative overflow-hidden">
-        {/* Toolbar */}
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 z-10 shadow-sm">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-gray-500">Viewport:</span>
-            <div className="flex bg-gray-100 p-1 rounded-lg">
-              <button onClick={() => setViewport('desktop')} className={`p-1.5 rounded-md transition-all ${viewport === 'desktop' ? "bg-white shadow-sm text-indigo-600" : "text-gray-400 hover:text-gray-600"}`}>
-                <Monitor size={18} />
-              </button>
-              <button onClick={() => setViewport('tablet')} className={`p-1.5 rounded-md transition-all ${viewport === 'tablet' ? "bg-white shadow-sm text-indigo-600" : "text-gray-400 hover:text-gray-600"}`}>
-                <Tablet size={18} />
-              </button>
-              <button onClick={() => setViewport('mobile')} className={`p-1.5 rounded-md transition-all ${viewport === 'mobile' ? "bg-white shadow-sm text-indigo-600" : "text-gray-400 hover:text-gray-600"}`}>
-                <Smartphone size={18} />
-              </button>
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-4">
-             <div className="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-bold flex items-center gap-1.5">
-               <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-               Live Preview
-             </div>
-          </div>
-        </header>
+  const sidebar = renderNodeToReact(sidebarNode);
 
-        {/* Preview Wrapper */}
-        <div className="flex-1 overflow-hidden relative">
-          <HeroPreview config={config} viewport={viewport} />
-        </div>
-      </main>
+  const header = (
+    <Box style={{ height: '64px', backgroundColor: '#fff', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 32px' }}>
+      <Flex gap="8px" align="center">
+        <Box tag="span" style={{ fontSize: '0.875rem', fontWeight: 600, color: '#6b7280' }}>Viewport:</Box>
+        <Box style={{ display: 'flex', backgroundColor: '#f3f4f6', padding: '4px', borderRadius: '8px' }}>
+          {(['desktop', 'tablet', 'mobile'] as const).map((v) => (
+            <Box 
+              tag="button"
+              key={v}
+              onClick={() => setViewport(v)}
+              style={{ 
+                padding: '6px', 
+                borderRadius: '6px', 
+                border: 'none',
+                cursor: 'pointer',
+                backgroundColor: viewport === v ? '#fff' : 'transparent',
+                color: viewport === v ? '#4f46e5' : '#9ca3af',
+                boxShadow: viewport === v ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)' : 'none'
+              }}
+            >
+              {v === 'desktop' && <Monitor size={18} />}
+              {v === 'tablet' && <Tablet size={18} />}
+              {v === 'mobile' && <Smartphone size={18} />}
+            </Box>
+          ))}
+        </Box>
+      </Flex>
+      
+      <Flex gap="16px" align="center">
+        <Box style={{ padding: '4px 12px', backgroundColor: '#f0fdf4', color: '#16a34a', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <Box style={{ width: '6px', height: '6px', backgroundColor: '#22c55e', borderRadius: '50%' }} />
+          Live Preview
+        </Box>
+      </Flex>
+    </Box>
+  );
+
+  const main = (
+    <Box style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+      <HeroPreview config={config} viewport={viewport} />
+    </Box>
+  );
+
+  return (
+    <Box style={{ height: '100vh', backgroundColor: '#f3f4f6', fontFamily: 'sans-serif' }}>
+      <DashboardLayout
+        sidebar={sidebar}
+        header={header}
+        sidebarWidth="320px"
+      >
+        {main}
+      </DashboardLayout>
 
       {/* Code Modal */}
       {showCode && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-8">
-          <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[80vh] flex flex-col shadow-2xl overflow-hidden">
-            <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <h2 className="text-xl font-bold">Export Code</h2>
-                <div className="flex bg-gray-100 p-1 rounded-lg">
-                  <button 
+        <Box style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px' }}>
+          <Box style={{ backgroundColor: '#fff', borderRadius: '16px', width: '100%', maxWidth: '896px', maxHeight: '80vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)' }}>
+            <Box style={{ padding: '24px', borderBottom: '1px solid #f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Flex gap="16px" align="center">
+                <Box tag="h2" style={{ fontSize: '1.25rem', fontWeight: 'bold', margin: 0 }}>Export Code</Box>
+                <Box style={{ display: 'flex', backgroundColor: '#f3f4f6', padding: '4px', borderRadius: '8px' }}>
+                  <Box 
+                    tag="button"
                     onClick={() => setCodeType('le')}
-                    className={`px-4 py-1.5 text-xs font-bold rounded-md transition-all ${codeType === 'le' ? "bg-white shadow-sm text-indigo-600" : "text-gray-500 hover:text-gray-700"}`}
+                    style={{ padding: '6px 16px', fontSize: '0.75rem', fontWeight: 'bold', borderRadius: '6px', border: 'none', cursor: 'pointer', backgroundColor: codeType === 'le' ? '#fff' : 'transparent', color: codeType === 'le' ? '#4f46e5' : '#6b7280' }}
                   >
                     Layout Engine
-                  </button>
-                  <button 
+                  </Box>
+                  <Box 
+                    tag="button"
                     onClick={() => setCodeType('tailwind')}
-                    className={`px-4 py-1.5 text-xs font-bold rounded-md transition-all ${codeType === 'tailwind' ? "bg-white shadow-sm text-indigo-600" : "text-gray-500 hover:text-gray-700"}`}
+                    style={{ padding: '6px 16px', fontSize: '0.75rem', fontWeight: 'bold', borderRadius: '6px', border: 'none', cursor: 'pointer', backgroundColor: codeType === 'tailwind' ? '#fff' : 'transparent', color: codeType === 'tailwind' ? '#4f46e5' : '#6b7280' }}
                   >
                     Tailwind CSS
-                  </button>
-                </div>
-              </div>
-              <button onClick={() => setShowCode(false)} className="p-2 hover:bg-gray-100 rounded-full transition-all">
+                  </Box>
+                </Box>
+              </Flex>
+              <Box tag="button" onClick={() => setShowCode(false)} style={{ padding: '8px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer', borderRadius: '50%' }}>
                 <X size={20} />
-              </button>
-            </div>
+              </Box>
+            </Box>
             
-            <div className="flex-1 overflow-hidden relative group">
-              <div className="absolute top-4 right-4 z-10">
-                <button 
+            <Box style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
+              <Box style={{ position: 'absolute', top: '16px', right: '16px', zIndex: 10 }}>
+                <Box 
+                  tag="button"
                   onClick={() => copyToClipboard(code)}
-                  className="p-2 bg-white/10 hover:bg-white/20 text-white rounded-lg backdrop-blur-md transition-all flex items-center gap-2 text-xs font-bold"
+                  style={{ padding: '8px 12px', backgroundColor: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', borderRadius: '8px', backdropFilter: 'blur(8px)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.75rem', fontWeight: 'bold' }}
                 >
-                  {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
+                  {copied ? <Check size={14} color="#4ade80" /> : <Copy size={14} />}
                   {copied ? 'Copied!' : 'Copy Code'}
-                </button>
-              </div>
-              <div className="h-full overflow-auto">
+                </Box>
+              </Box>
+              <Box style={{ height: '100%', overflow: 'auto' }}>
                 <SyntaxHighlighter 
                   language="tsx" 
                   style={vscDarkPlus}
@@ -286,21 +409,22 @@ function App() {
                 >
                   {code}
                 </SyntaxHighlighter>
-              </div>
-            </div>
+              </Box>
+            </Box>
             
-            <div className="p-6 bg-gray-50 border-t border-gray-100 flex justify-end">
-              <button 
+            <Box style={{ padding: '24px', backgroundColor: '#f9fafb', borderTop: '1px solid #f3f4f6', display: 'flex', justifyContent: 'flex-end' }}>
+              <Box 
+                tag="button"
                 onClick={() => setShowCode(false)}
-                className="px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all"
+                style={{ padding: '8px 24px', backgroundColor: '#4f46e5', color: '#fff', borderRadius: '12px', fontWeight: 'bold', fontSize: '0.875rem', border: 'none', cursor: 'pointer' }}
               >
                 Close
-              </button>
-            </div>
-          </div>
-        </div>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }
 

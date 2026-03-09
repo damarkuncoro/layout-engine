@@ -12,32 +12,21 @@ export const HeroPreview = ({ config, viewport }: HeroPreviewProps) => {
 
   const heroNode = LE_Hero({
     pattern: config.pattern,
-    title: (
-      <span style={{ color: config.textColor, fontSize: '2.5rem', fontWeight: 800, lineHeight: 1.2 }}>
-        {config.title}
-      </span>
-    ),
-    description: (
-      <span style={{ color: config.textColor, opacity: 0.8, fontSize: '1.125rem', lineHeight: 1.6 }}>
-        {config.description}
-      </span>
-    ),
-    visual: config.visualType === 'image' ? (
-      <img 
-        src={config.visualUrl} 
-        alt="Hero Visual" 
-        className="rounded-2xl shadow-2xl object-cover w-full h-auto max-h-[500px]"
-        style={{ borderRadius: config.borderRadius }}
-      />
-    ) : null,
+    title: config.title,
+    description: config.description,
+    visual: config.visualType === 'image' ? config.visualUrl : null,
+    video: config.visualType === 'video' ? config.videoUrl : undefined,
     actions: config.actions.map(action => ({
       id: action.id,
       label: action.label,
       href: action.href,
+      variant: action.variant as any,
       onClick: () => console.log('Action clicked:', action.label)
     })),
+    stats: config.variant === 'stats' ? config.stats : [],
     background: config.backgroundColor,
-    paddingY: config.pattern === 'fullscreen' ? '0' : config.paddingY,
+    visualOverlay: config.visualOverlay,
+    paddingY: (config.pattern === 'fullscreen' || config.variant === 'background' || config.variant === 'video') ? '0' : config.paddingY,
     paddingX: config.paddingX,
     viewportWidth,
     reverse: config.reverse,

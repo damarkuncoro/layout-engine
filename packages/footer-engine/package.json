@@ -1,0 +1,49 @@
+{
+  "name": "@damarkuncoro/footer-engine",
+  "version": "0.1.0",
+  "description": "Headless footer engine with slots and layout patterns",
+  "license": "MIT",
+  "type": "module",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "footer",
+    "landing",
+    "headless",
+    "ui",
+    "layout"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "exports": {
+    ".": {
+      "types": "./lib/esm/index.d.ts",
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "postbuild:cjs": "node scripts/ensure-cjs.js",
+    "build": "npm run build:esm && npm run build:cjs && npm run postbuild:cjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@damarkuncoro/layout-engine": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@damarkuncoro/layout-engine": "workspace:*"
+  }
+}

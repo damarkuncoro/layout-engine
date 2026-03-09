@@ -92,7 +92,7 @@ const Navbar = () => {
           'justify-between'
         }">
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
+          <div className="shrink-0 flex items-center">
             <span className="text-xl font-bold tracking-tight" style={{ color: '${config.textColor}' }}>
               ${config.logoText}
             </span>

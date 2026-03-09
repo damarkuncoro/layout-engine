@@ -286,37 +286,46 @@ export function ProfilePagePreset(props: H.ProfilePagePresetProps) {
   return renderNodeToReact(node)
 }
 
-export function Box(props: H.LayoutProps & { children?: any }) {
+export interface ReactBoxProps extends H.LayoutProps {
+  children?: any
+  tag?: any
+  onClick?: any
+  href?: any
+  type?: any
+  [key: string]: any
+}
+
+export function Box(props: ReactBoxProps): any {
   const node = H.Box(props)
   return renderNodeToReact(node)
 }
 
-export function Flex(props: H.FlexProps & { children?: any }) {
+export function Flex(props: H.FlexProps & { children?: any; tag?: any; onClick?: any; [key: string]: any }): any {
   const node = H.Flex(props)
   return renderNodeToReact(node)
 }
 
-export function Stack(props: H.StackProps & { children?: any }) {
+export function Stack(props: H.StackProps & { children?: any; tag?: any; [key: string]: any }): any {
   const node = H.Stack(props)
   return renderNodeToReact(node)
 }
 
-export function Grid(props: H.GridProps & { children?: any }) {
+export function Grid(props: H.GridProps & { children?: any; tag?: any; [key: string]: any }): any {
   const node = H.Grid(props)
   return renderNodeToReact(node)
 }
 
-export function Container(props: H.ContainerProps & { children?: any }) {
+export function Container(props: H.ContainerProps & { children?: any; tag?: any; [key: string]: any }): any {
   const node = H.Container(props)
   return renderNodeToReact(node)
 }
 
-export function Spacer(props: { size?: any }) {
+export function Spacer(props: { size?: any; [key: string]: any }): any {
   const node = H.Spacer(props)
   return renderNodeToReact(node)
 }
 
-export function Center(props: any) {
+export function Center(props: any): any {
   const node = H.Center(props)
   return renderNodeToReact(node)
 }
@@ -343,8 +352,9 @@ export function SplitLayout(props: H.SplitLayoutContract) {
   return renderNodeToReact(node)
 }
 
-export function DashboardLayout(props: H.DashboardLayoutContract) {
-  const node = H.DashboardLayout(props)
+export function DashboardLayout(props: H.DashboardLayoutProps) {
+  const vw = useViewport()
+  const node = H.DashboardLayout({ viewportWidth: props?.viewportWidth ?? vw, ...props })
   return renderNodeToReact(node)
 }
 

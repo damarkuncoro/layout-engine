@@ -28,7 +28,9 @@ export interface LayoutProps {
   width?: CSSLength
   height?: CSSLength
   display?: string
+  tag?: string
   style?: Record<string, any>
+  [key: string]: any
 }
 
 /**

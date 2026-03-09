@@ -13,6 +13,7 @@
     "@damarkuncoro/layout-engine": "workspace:*",
     "@damarkuncoro/layout-engine-react": "workspace:*",
     "@damarkuncoro/hero-engine": "workspace:*",
+    "@damarkuncoro/sidebar-engine": "workspace:*",
     "clsx": "^2.1.1",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.24",
