@@ -6,6 +6,7 @@ export interface AuthLayoutProps {
   children: NodeLike
   logo?: NodeLike
   subtitle?: string
+  viewportWidth?: number
 }
 
 /**
@@ -15,26 +16,30 @@ export interface AuthLayoutProps {
 export function AuthLayout({
   children,
   logo,
-  subtitle
+  subtitle,
+  viewportWidth = 1024
 }: AuthLayoutProps) {
   return Flex({
+    viewportWidth,
     style: { 
       minHeight: "100vh",
       alignItems: "center", 
       justifyContent: "center" 
     },
     children: Box({
+      viewportWidth,
       style: { 
         width: "100%", 
         maxWidth: "400px", 
         padding: "24px" 
       },
       children: Flex({
+        viewportWidth,
         direction: "column",
         gap: 4,
         children: [
-          logo ? Box({ children: logo }) : null,
-          subtitle ? Box({ children: subtitle }) : null,
+          logo ? Box({ viewportWidth, children: logo }) : null,
+          subtitle ? Box({ viewportWidth, children: subtitle }) : null,
           children
         ].filter(Boolean)
       })

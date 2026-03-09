@@ -11,11 +11,19 @@ import {
   FileText,
   HelpCircle
 } from 'lucide-react';
+import { DashboardContent } from './content/DashboardContent';
+import { SettingsContent } from './content/SettingsContent';
+import { DocsContent } from './content/DocsContent';
+import { PlaceholderContent } from './content/PlaceholderContent';
 import { SidebarConfig } from '../types';
-import { cn } from '../lib/utils';
+import { cn } from '../utils/cn';
 
 interface SidebarPreviewProps {
   config: SidebarConfig;
+  isDark: boolean;
+  isBrutalist: boolean;
+  isGlass: boolean;
+  isFloating: boolean;
   viewport: 'mobile' | 'tablet' | 'desktop';
   showContent: boolean;
 }
@@ -33,14 +41,17 @@ const ICON_MAP: Record<string, React.ComponentType<any>> = {
   HelpCircle
 };
 
-export const SidebarPreview = ({ config, viewport, showContent }: SidebarPreviewProps) => {
+export const SidebarPreview = ({ 
+  config, 
+  isDark,
+  isBrutalist,
+  isGlass,
+  isFloating,
+  viewport, 
+  showContent 
+}: SidebarPreviewProps) => {
   const [collapsed, setCollapsed] = useState(config.collapsed);
   const [activeItem, setActiveItem] = useState<string | null>('1-1');
-
-  const isDark = config.theme === 'dark';
-  const isBrutalist = config.style === 'brutalist';
-  const isGlass = config.style === 'glass';
-  const isFloating = config.style === 'floating';
 
   const getContainerStyle = () => {
     const baseStyle: Record<string, string> = {
@@ -234,60 +245,13 @@ export const SidebarPreview = ({ config, viewport, showContent }: SidebarPreview
   const renderContent = () => {
     switch (config.pageContext) {
       case 'dashboard':
-        return (
-          <div className={cn("flex-1 p-6 transition-colors duration-300", isDark ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900")}>
-            <div className="max-w-4xl mx-auto space-y-6">
-              <div className={cn("p-6 rounded-xl border", isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200 shadow-sm")}>
-                <h2 className="text-xl font-bold mb-4">Dashboard Overview</h2>
-                <div className="grid grid-cols-3 gap-4">
-                  {[
-                    { label: 'Total Users', value: '12,345' },
-                    { label: 'Revenue', value: '$45,678' },
-                    { label: 'Growth', value: '+23%' }
-                  ].map((stat) => (
-                    <div key={stat.label} className={cn("p-4 rounded-lg", isDark ? "bg-gray-700" : "bg-gray-50")}>
-                      <div className={cn("text-sm", isDark ? "text-gray-400" : "text-gray-500")}>{stat.label}</div>
-                      <div className="text-2xl font-bold">{stat.value}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        );
+        return <DashboardContent isDark={isDark} />;
       case 'settings':
-        return (
-          <div className={cn("flex-1 p-6 transition-colors duration-300", isDark ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900")}>
-            <div className="max-w-2xl mx-auto">
-              <h2 className="text-2xl font-bold mb-6">Settings</h2>
-              <div className={cn("space-y-4", isDark ? "text-gray-300" : "text-gray-600")}>
-                <p>Configure your application settings...</p>
-              </div>
-            </div>
-          </div>
-        );
+        return <SettingsContent isDark={isDark} />;
       case 'docs':
-        return (
-          <div className={cn("flex-1 p-6 transition-colors duration-300 overflow-auto", isDark ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900")}>
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-2xl font-bold mb-6">Documentation</h2>
-              <div className={cn("prose", isDark ? "prose-invert" : "prose-gray")}>
-                <p>Welcome to the documentation...</p>
-              </div>
-            </div>
-          </div>
-        );
+        return <DocsContent isDark={isDark} />;
       default:
-        return showContent ? (
-          <div className={cn("flex-1 p-6 transition-colors duration-300", isDark ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900")}>
-            <div className="space-y-4">
-              <div className={cn("h-8 w-1/3 rounded animate-pulse", isDark ? "bg-gray-700" : "bg-gray-200")} />
-              <div className={cn("h-4 w-full rounded animate-pulse", isDark ? "bg-gray-700" : "bg-gray-100")} />
-              <div className={cn("h-4 w-full rounded animate-pulse", isDark ? "bg-gray-700" : "bg-gray-100")} />
-              <div className={cn("h-4 w-2/3 rounded animate-pulse", isDark ? "bg-gray-700" : "bg-gray-100")} />
-            </div>
-          </div>
-        ) : null;
+        return showContent ? <PlaceholderContent isDark={isDark} /> : null;
     }
   };
 

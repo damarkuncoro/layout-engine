@@ -1,5 +1,5 @@
 import type { CSSLength, HeadlessNode, ResponsiveValue } from "./types.js"
-export type NodeLike = HeadlessNode | string | number | boolean | null | undefined
+export type NodeLike = HeadlessNode | string | number | boolean | null | undefined | any
 
 export interface SidebarLayoutContract {
   sidebar: NodeLike

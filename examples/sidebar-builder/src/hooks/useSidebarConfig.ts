@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { SidebarConfig, SidebarItem, SidebarGroup, DEFAULT_CONFIG } from '../types';
 
 const STORAGE_KEY = 'sidebarcraft_config';
@@ -93,8 +93,16 @@ export function useSidebarConfig() {
 
   const resetConfig = () => setConfig(DEFAULT_CONFIG);
 
+  const styleProps = useMemo(() => ({
+    isDark: config.theme === 'dark',
+    isBrutalist: config.style === 'brutalist',
+    isGlass: config.style === 'glass',
+    isFloating: config.style === 'floating',
+  }), [config.theme, config.style]);
+
   return {
     config,
+    ...styleProps,
     updateConfig,
     addGroup,
     addItemToGroup,

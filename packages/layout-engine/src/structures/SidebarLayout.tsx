@@ -21,10 +21,11 @@ export function SidebarLayout({
   const resolvedWidth = normalizeUnit(resolveResponsive(sidebarWidth, viewportWidth) ?? 240)
   
   return Flex({
+    viewportWidth,
     gap: LAYOUT_DEFAULTS.GAP_DEFAULT,
     children: [
-      Box({ width: resolvedWidth, children: sidebar }),
-      Box({ style: { flex: 1 }, children })
+      Box({ viewportWidth, tag: "aside", width: resolvedWidth, children: sidebar }),
+      Box({ viewportWidth, tag: "main", style: { flex: 1 }, children })
     ]
   })
 }

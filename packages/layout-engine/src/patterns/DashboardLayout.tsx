@@ -7,8 +7,8 @@ import type { CSSLength, ResponsiveValue } from "../system/types.js"
 
 export interface DashboardLayoutProps extends DashboardLayoutContract {
   sidebarWidth?: ResponsiveValue<CSSLength>
-  headerHeight?: string | number
-  height?: string | number
+  headerHeight?: ResponsiveValue<CSSLength>
+  height?: ResponsiveValue<CSSLength>
   viewportWidth?: number
   style?: Record<string, any>
 }
@@ -27,12 +27,17 @@ export function DashboardLayout({
   style
 }: DashboardLayoutProps) {
   const resolvedSidebarWidth = normalizeUnit(resolveResponsive(sidebarWidth, viewportWidth) ?? 280)
+  const resolvedHeaderHeight = normalizeUnit(resolveResponsive(headerHeight, viewportWidth) ?? 64)
+  const resolvedHeight = normalizeUnit(resolveResponsive(height, viewportWidth) ?? "100vh")
 
   return Flex({
-    style: { height, overflow: "hidden", ...style },
+    viewportWidth,
+    style: { height: resolvedHeight, overflow: "hidden", ...style },
     children: [
       // Sidebar Area
       (resolvedSidebarWidth !== '0px') && Box({ 
+        viewportWidth,
+        tag: "aside",
         width: resolvedSidebarWidth, 
         style: { height: "100%", flexShrink: 0, overflow: 'hidden' },
         children: sidebar 
@@ -40,18 +45,23 @@ export function DashboardLayout({
       
       // Main Content Area (Header + Scrollable Content)
       Flex({
+        viewportWidth,
         direction: "column",
         style: { flex: 1, height: "100%", minWidth: 0 },
         children: [
           // Sticky Header
           Box({ 
-            height: headerHeight, 
+            viewportWidth,
+            tag: "header",
+            height: resolvedHeaderHeight, 
             style: { position: "sticky", top: 0, zIndex: 10, flexShrink: 0 },
             children: header 
           }),
           
           // Scrollable Content
           Box({
+            viewportWidth,
+            tag: "main",
             style: { flex: 1, overflowY: "auto", position: "relative", padding: "24px" },
             children
           })

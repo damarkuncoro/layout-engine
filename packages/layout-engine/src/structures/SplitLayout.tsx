@@ -27,14 +27,17 @@ export function SplitLayout({
     : splitRatio
 
   return Flex({
+    viewportWidth,
     gap: 4,
     children: [
       Box({ 
+        viewportWidth,
         width: resolvedWidth,
         style: { flexShrink: 0 },
         children: left 
       }),
       Box({
+        viewportWidth,
         style: { flex: 1 },
         children: right
       })

@@ -1,10 +1,10 @@
 import { normalizeUnit } from "../core/styleResolver.js"
-import type { LayoutProps, CSSLength } from "../system/types.js"
-import { LAYOUT_DEFAULTS } from "../system/constants.js"
+import { resolveResponsive } from "../core/responsiveSystem.js"
+import type { LayoutProps, CSSLength, ResponsiveValue } from "../system/types.js"
 
 export interface ContainerProps extends LayoutProps {
-  maxWidth?: CSSLength
-  centerContent?: boolean
+  maxWidth?: ResponsiveValue<CSSLength>
+  centerContent?: ResponsiveValue<boolean>
 }
 
 /**
@@ -12,30 +12,37 @@ export interface ContainerProps extends LayoutProps {
  */
 export function Container({
   children,
-  maxWidth = LAYOUT_DEFAULTS.CONTAINER_MAX_WIDTH,
+  maxWidth,
   centerContent = true,
-  padding = LAYOUT_DEFAULTS.CONTAINER_PADDING,
+  padding,
   margin,
   width,
   height,
   display,
+  className,
+  id,
+  tag = "div",
   style,
+  viewportWidth = 1024,
   ...rest
-}: ContainerProps & { children?: any }) {
+}: ContainerProps & { children?: any; [key: string]: any }) {
+  const resolvedCenter = resolveResponsive(centerContent, viewportWidth)
   const resolved: Record<string, any> = {
-    padding: normalizeUnit(padding),
-    margin: margin ? normalizeUnit(margin) : "0 auto",
-    width: width ?? "100%",
-    height: normalizeUnit(height),
-    maxWidth: normalizeUnit(maxWidth),
-    display: display ?? "block",
-    ...(centerContent && { marginLeft: "auto", marginRight: "auto" }),
+    padding: normalizeUnit(resolveResponsive(padding, viewportWidth)),
+    margin: resolveResponsive(margin, viewportWidth) ? normalizeUnit(resolveResponsive(margin, viewportWidth)) : "0 auto",
+    width: resolveResponsive(width, viewportWidth) ?? "100%",
+    height: normalizeUnit(resolveResponsive(height, viewportWidth)),
+    maxWidth: normalizeUnit(resolveResponsive(maxWidth as any, viewportWidth)),
+    display: resolveResponsive(display, viewportWidth) ?? "block",
+    ...(resolvedCenter && { marginLeft: "auto", marginRight: "auto" }),
     ...style
   }
   return {
-    type: "div",
+    type: tag,
     props: {
       style: resolved,
+      className,
+      id,
       ...rest,
       children
     }

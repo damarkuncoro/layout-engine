@@ -4,6 +4,7 @@ export type {
   SidebarProps, 
   SidebarHeaderProps, 
   SidebarFooterProps, 
+  SidebarContentProps,
   SidebarGroupProps, 
   SidebarItemProps,
   SidebarItem as SidebarItemData,

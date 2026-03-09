@@ -42,12 +42,14 @@
   },
   "dependencies": {
     "@damarkuncoro/layout-engine": "workspace:*",
-    "@damarkuncoro/navbar-engine": "workspace:*"
+    "@damarkuncoro/navbar-engine": "workspace:*",
+    "@damarkuncoro/sidebar-engine": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.4.0",
     "@damarkuncoro/layout-engine": "workspace:*",
     "@damarkuncoro/navbar-engine": "workspace:*",
+    "@damarkuncoro/sidebar-engine": "workspace:*",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0"
   },

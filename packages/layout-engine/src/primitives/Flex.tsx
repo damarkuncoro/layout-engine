@@ -1,11 +1,13 @@
 import { normalizeUnit } from "../core/styleResolver.js"
-import type { LayoutProps, CSSLength } from "../system/types.js"
+import { resolveResponsive } from "../core/responsiveSystem.js"
+import type { LayoutProps, CSSLength, ResponsiveValue } from "../system/types.js"
 
 export interface FlexProps extends LayoutProps {
-  justify?: string
-  align?: string
-  gap?: CSSLength
-  direction?: "row" | "row-reverse" | "column" | "column-reverse"
+  justify?: ResponsiveValue<string>
+  align?: ResponsiveValue<string>
+  gap?: ResponsiveValue<CSSLength>
+  direction?: ResponsiveValue<"row" | "row-reverse" | "column" | "column-reverse">
+  wrap?: ResponsiveValue<"nowrap" | "wrap" | "wrap-reverse">
   tag?: string
 }
 
@@ -15,35 +17,41 @@ export interface FlexProps extends LayoutProps {
  */
 export function Flex({
   children,
-  justify,
-  align,
-  gap,
   direction = "row",
-  tag = "div",
+  align = "stretch",
+  justify = "flex-start",
+  gap,
+  wrap = "nowrap",
   padding,
   margin,
   width,
   height,
-  display,
+  className,
+  id,
+  tag = "div",
   style,
+  viewportWidth = 1024,
   ...rest
-}: FlexProps & { children?: any }) {
+}: (FlexProps & { children?: any; [key: string]: any })) {
   const resolved: Record<string, any> = {
-    padding: normalizeUnit(padding),
-    margin: normalizeUnit(margin),
-    width: normalizeUnit(width),
-    height: normalizeUnit(height),
-    display: display ?? "flex",
-    justifyContent: justify,
-    alignItems: align,
-    gap: normalizeUnit(gap as any),
-    flexDirection: direction,
+    display: "flex",
+    flexDirection: resolveResponsive(direction, viewportWidth),
+    alignItems: resolveResponsive(align, viewportWidth),
+    justifyContent: resolveResponsive(justify, viewportWidth),
+    gap: normalizeUnit(resolveResponsive(gap as any, viewportWidth)),
+    flexWrap: resolveResponsive(wrap, viewportWidth),
+    padding: normalizeUnit(resolveResponsive(padding, viewportWidth)),
+    margin: normalizeUnit(resolveResponsive(margin, viewportWidth)),
+    width: normalizeUnit(resolveResponsive(width, viewportWidth)),
+    height: normalizeUnit(resolveResponsive(height, viewportWidth)),
     ...style
   }
   return {
     type: tag,
     props: {
       style: resolved,
+      className,
+      id,
       ...rest,
       children
     }

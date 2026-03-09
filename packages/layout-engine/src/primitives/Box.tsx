@@ -1,4 +1,5 @@
 import { normalizeUnit } from "../core/styleResolver.js"
+import { resolveResponsive } from "../core/responsiveSystem.js"
 import type { LayoutProps } from "../system/types.js"
 
 export { type LayoutProps }
@@ -15,21 +16,27 @@ export function Box({
   width,
   height,
   display,
+  className,
+  id,
   style,
+  viewportWidth = 1024,
   ...rest
 }: (LayoutProps & { children?: any; tag?: string } & Record<string, any>)) {
   const resolved: Record<string, any> = {
-    padding: normalizeUnit(padding),
-    margin: normalizeUnit(margin),
-    width: normalizeUnit(width),
-    height: normalizeUnit(height),
-    display,
+    boxSizing: "border-box",
+    padding: normalizeUnit(resolveResponsive(padding, viewportWidth)),
+    margin: normalizeUnit(resolveResponsive(margin, viewportWidth)),
+    width: normalizeUnit(resolveResponsive(width, viewportWidth)),
+    height: normalizeUnit(resolveResponsive(height, viewportWidth)),
+    display: resolveResponsive(display, viewportWidth),
     ...style
   }
   return {
     type: tag,
     props: {
       style: resolved,
+      className,
+      id,
       ...rest,
       children
     }

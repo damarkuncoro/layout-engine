@@ -1,36 +1,41 @@
-import type { CSSLength, LayoutProps } from "../system/types.js"
+import type { CSSLength, LayoutProps, ResponsiveValue } from "../system/types.js"
 import { normalizeUnit } from "../core/styleResolver.js"
-import { LAYOUT_DEFAULTS } from "../system/constants.js"
+import { resolveResponsive } from "../core/responsiveSystem.js"
 
 export interface StackProps extends LayoutProps {
-  gap?: CSSLength
+  gap?: ResponsiveValue<CSSLength>
 }
 
 export function Stack({
   children,
-  gap = LAYOUT_DEFAULTS.GAP_DEFAULT,
+  gap,
   padding,
   margin,
   width,
   height,
-  display,
+  className,
+  id,
+  tag = "div",
   style,
+  viewportWidth = 1024,
   ...rest
-}: StackProps & { children?: any }) {
+}: (StackProps & { children?: any; [key: string]: any })) {
   const resolved: Record<string, any> = {
-    padding: normalizeUnit(padding),
-    margin: normalizeUnit(margin),
-    width: normalizeUnit(width),
-    height: normalizeUnit(height),
-    display: display ?? "flex",
+    display: "flex",
     flexDirection: "column",
-    gap: normalizeUnit(gap as any),
+    gap: normalizeUnit(resolveResponsive(gap as any, viewportWidth)),
+    padding: normalizeUnit(resolveResponsive(padding, viewportWidth)),
+    margin: normalizeUnit(resolveResponsive(margin, viewportWidth)),
+    width: normalizeUnit(resolveResponsive(width, viewportWidth)),
+    height: normalizeUnit(resolveResponsive(height, viewportWidth)),
     ...style
   }
   return {
-    type: "div",
+    type: tag,
     props: {
       style: resolved,
+      className,
+      id,
       ...rest,
       children
     }

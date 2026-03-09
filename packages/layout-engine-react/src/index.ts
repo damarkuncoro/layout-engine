@@ -7,188 +7,59 @@ import { useViewport, BreakpointsProvider, useResponsive } from "./viewport.js"
 // Navbar-engine wrapper
 import * as N from "@damarkuncoro/navbar-engine"
 export type { NavbarProps } from "@damarkuncoro/navbar-engine"
+
+// Sidebar-engine wrapper
+import * as S from "@damarkuncoro/sidebar-engine"
+export type { SidebarProps, SidebarHeaderProps, SidebarFooterProps, SidebarContentProps, SidebarGroupProps, SidebarItemProps } from "@damarkuncoro/sidebar-engine"
+
+export function Sidebar(props: S.SidebarProps) {
+  const vw = useViewport()
+  const node = S.Sidebar({ viewportWidth: props.viewportWidth ?? vw, ...props })
+  return renderNodeToReact(node)
+}
+
+export namespace Sidebar {
+  export function Header(props: S.SidebarHeaderProps) {
+    const vw = useViewport()
+    const node = S.SidebarHeader({ viewportWidth: props.viewportWidth ?? vw, ...props })
+    return renderNodeToReact(node)
+  }
+  export function Footer(props: S.SidebarFooterProps) {
+    const vw = useViewport()
+    const node = S.SidebarFooter({ viewportWidth: props.viewportWidth ?? vw, ...props })
+    return renderNodeToReact(node)
+  }
+  export function Content(props: S.SidebarContentProps) {
+    const vw = useViewport()
+    const node = S.SidebarContent({ viewportWidth: props.viewportWidth ?? vw, ...props })
+    return renderNodeToReact(node)
+  }
+  export function Main(props: S.SidebarContentProps) {
+    const vw = useViewport()
+    const node = (S.Sidebar as any).Main({ viewportWidth: props.viewportWidth ?? vw, ...props })
+    return renderNodeToReact(node)
+  }
+  export function Group(props: S.SidebarGroupProps) {
+    const vw = useViewport()
+    const node = S.SidebarGroup({ viewportWidth: props.viewportWidth ?? vw, ...props })
+    return renderNodeToReact(node)
+  }
+  export function Item(props: S.SidebarItemProps) {
+    const vw = useViewport()
+    const node = S.SidebarItem({ viewportWidth: props.viewportWidth ?? vw, ...props })
+    return renderNodeToReact(node)
+  }
+}
+
 export function Navbar(props: N.NavbarProps) {
-  const node = N.Navbar(props)
+  const vw = useViewport()
+  const node = N.Navbar({ viewportWidth: props.viewportWidth ?? vw, ...props })
   return renderNodeToReact(node)
 }
 export function NavbarAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
   const vw = useViewport()
   const node = (N as any).Navbar({ viewportWidth: props?.viewportWidth ?? vw, ...props })
   return renderNodeToReact(node)
-}
-export function NavbarTransparentSolid(props: N.NavbarProps) {
-  const node = (N as any).NavbarTransparentSolid(props as any)
-  return renderNodeToReact(node)
-}
-export function NavbarTransparentSolidAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
-  const vw = useViewport()
-  const node = (N as any).NavbarTransparentSolid({ viewportWidth: props?.viewportWidth ?? vw, ...props })
-  return renderNodeToReact(node)
-}
-export function NavbarTopStickyLight(props: N.NavbarProps) {
-  const node = (N as any).NavbarTopStickyLight(props as any)
-  return renderNodeToReact(node)
-}
-export function NavbarTopStickyLightAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
-  const vw = useViewport()
-  const node = (N as any).NavbarTopStickyLight({ viewportWidth: props?.viewportWidth ?? vw, ...props })
-  return renderNodeToReact(node)
-}
-export function NavbarCenteredBrand(props: N.NavbarProps) {
-  const node = (N as any).NavbarCenteredBrand(props as any)
-  return renderNodeToReact(node)
-}
-export function NavbarCenteredBrandAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
-  const vw = useViewport()
-  const node = (N as any).NavbarCenteredBrand({ viewportWidth: props?.viewportWidth ?? vw, ...props })
-  return renderNodeToReact(node)
-}
-export function NavbarUnderlineOnly(props: N.NavbarProps) {
-  const node = (N as any).NavbarUnderlineOnly(props as any)
-  return renderNodeToReact(node)
-}
-export function NavbarUnderlineOnlyAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
-  const vw = useViewport()
-  const node = (N as any).NavbarUnderlineOnly({ viewportWidth: props?.viewportWidth ?? vw, ...props })
-  return renderNodeToReact(node)
-}
-
-export function NavbarTransparentSolidAuto(props: N.NavbarProps & { viewportWidth?: number }) {
-  const vw = useViewport()
-  const [scrolled, setScrolled] = React.useState(false)
-  const [reduceMotion, setReduceMotion] = React.useState(false)
-  React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 16)
-    onScroll()
-    window.addEventListener("scroll", onScroll)
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
-  React.useEffect(() => {
-    const mq = window.matchMedia?.("(prefers-reduced-motion: reduce)")
-    const apply = () => setReduceMotion(!!mq?.matches)
-    apply()
-    mq?.addEventListener?.("change", apply)
-    return () => mq?.removeEventListener?.("change", apply)
-  }, [])
-  const node = (N as any).NavbarTransparentSolid({
-    viewportWidth: props?.viewportWidth ?? vw,
-    scrolled,
-    reduceMotion,
-    ...props
-  })
-  return renderNodeToReact(node)
-}
-
-export function NavbarGlassBlur(props: N.NavbarProps) {
-  const node = (N as any).NavbarGlassBlur(props as any)
-  return renderNodeToReact(node)
-}
-export function NavbarGlassBlurAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
-  const vw = useViewport()
-  const node = (N as any).NavbarGlassBlur({ viewportWidth: props?.viewportWidth ?? vw, ...props })
-  return renderNodeToReact(node)
-}
-
-export function NavbarModern(props: N.NavbarProps) {
-  const node = (N as any).NavbarModern(props as any)
-  return renderNodeToReact(node)
-}
-export function NavbarModernAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
-  const vw = useViewport()
-  const node = (N as any).NavbarModern({ viewportWidth: props?.viewportWidth ?? vw, ...props })
-  return renderNodeToReact(node)
-}
-export function NavbarBrutalist(props: N.NavbarProps) {
-  const node = (N as any).NavbarBrutalist(props as any)
-  return renderNodeToReact(node)
-}
-export function NavbarBrutalistAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
-  const vw = useViewport()
-  const node = (N as any).NavbarBrutalist({ viewportWidth: props?.viewportWidth ?? vw, ...props })
-  return renderNodeToReact(node)
-}
-export function NavbarFloating(props: N.NavbarProps) {
-  const node = (N as any).NavbarFloating(props as any)
-  return renderNodeToReact(node)
-}
-export function NavbarFloatingAutoVW(props: N.NavbarProps & { viewportWidth?: number }) {
-  const vw = useViewport()
-  const node = (N as any).NavbarFloating({ viewportWidth: props?.viewportWidth ?? vw, ...props })
-  return renderNodeToReact(node)
-}
-export function NavbarTransparentSolidAutoWithOutsideClose(props: N.NavbarProps & { viewportWidth?: number }) {
-  const vw = useViewport()
-  const [scrolled, setScrolled] = React.useState(false)
-  const [reduceMotion, setReduceMotion] = React.useState(false)
-  const ref = React.useRef<HTMLDivElement | null>(null)
-  React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 16)
-    onScroll()
-    window.addEventListener("scroll", onScroll)
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
-  React.useEffect(() => {
-    const mq = window.matchMedia?.("(prefers-reduced-motion: reduce)")
-    const apply = () => setReduceMotion(!!mq?.matches)
-    apply()
-    mq?.addEventListener?.("change", apply)
-    return () => mq?.removeEventListener?.("change", apply)
-  }, [])
-  React.useEffect(() => {
-    const handler = (e: any) => {
-      if (!props.menuOpen) return
-      const el = ref.current
-      if (el && e.target && !el.contains(e.target)) {
-        props.onMenuToggle?.(e)
-      }
-    }
-    document.addEventListener("mousedown", handler)
-    return () => document.removeEventListener("mousedown", handler)
-  }, [props.menuOpen])
-  React.useEffect(() => {
-    if (!props.menuOpen) return
-    const panelId = (props as any).menuId ?? "navbar-menu"
-    const panel = document.getElementById(panelId)
-    if (!panel) return
-    const selector = (props as any).menuItemSelector ?? 'a,button,[role="menuitem"]'
-    const items = Array.from(panel.querySelectorAll(selector)) as HTMLElement[]
-    const focusFirst = () => items[0]?.focus?.()
-    const onKey = (e: KeyboardEvent) => {
-      const { key } = e
-      if (!items.length) return
-      const currentIndex = items.findIndex((it) => it === document.activeElement)
-      const next = (i: number) => items[(i + items.length) % items.length]?.focus?.()
-      if (key === "ArrowDown" || key === "ArrowRight") {
-        e.preventDefault()
-        if (currentIndex < 0) focusFirst()
-        else next(currentIndex + 1)
-      } else if (key === "ArrowUp" || key === "ArrowLeft") {
-        e.preventDefault()
-        if (currentIndex < 0) items[items.length - 1]?.focus?.()
-        else next(currentIndex - 1)
-      } else if (key === "Home") {
-        e.preventDefault()
-        focusFirst()
-      } else if (key === "End") {
-        e.preventDefault()
-        items[items.length - 1]?.focus?.()
-      } else if (key === "Escape") {
-        e.preventDefault()
-        ;(props as any).onMenuToggle?.(e)
-      }
-    }
-    panel.addEventListener("keydown", onKey as any)
-    // Focus panel to enable keyboard nav if nothing focused
-    ;(panel as any).focus?.()
-    return () => panel.removeEventListener("keydown", onKey as any)
-  }, [props.menuOpen, (props as any).menuId, (props as any).menuItemSelector])
-  const node = (N as any).NavbarTransparentSolid({
-    viewportWidth: props?.viewportWidth ?? vw,
-    scrolled,
-    reduceMotion,
-    ...props
-  })
-  return React.createElement("div", { ref }, renderNodeToReact(node))
 }
 
 export type {
@@ -286,46 +157,55 @@ export function ProfilePagePreset(props: H.ProfilePagePresetProps) {
   return renderNodeToReact(node)
 }
 
-export interface ReactBoxProps extends H.LayoutProps {
+export interface ReactBaseProps {
   children?: any
   tag?: any
-  onClick?: any
-  href?: any
-  type?: any
+  className?: string
+  style?: React.CSSProperties
+  id?: string
   [key: string]: any
 }
 
+export interface ReactBoxProps extends Omit<H.LayoutProps, "style">, ReactBaseProps {
+  style?: React.CSSProperties
+}
+
 export function Box(props: ReactBoxProps): any {
-  const node = H.Box(props)
+  const vw = useViewport()
+  const node = H.Box({ viewportWidth: props.viewportWidth ?? vw, ...props })
   return renderNodeToReact(node)
 }
 
-export function Flex(props: H.FlexProps & { children?: any; tag?: any; onClick?: any; [key: string]: any }): any {
-  const node = H.Flex(props)
+export function Flex(props: H.FlexProps & ReactBaseProps): any {
+  const vw = useViewport()
+  const node = H.Flex({ viewportWidth: props.viewportWidth ?? vw, ...props })
   return renderNodeToReact(node)
 }
 
-export function Stack(props: H.StackProps & { children?: any; tag?: any; [key: string]: any }): any {
-  const node = H.Stack(props)
+export function Stack(props: H.StackProps & ReactBaseProps): any {
+  const vw = useViewport()
+  const node = H.Stack({ viewportWidth: props.viewportWidth ?? vw, ...props })
   return renderNodeToReact(node)
 }
 
-export function Grid(props: H.GridProps & { children?: any; tag?: any; [key: string]: any }): any {
-  const node = H.Grid(props)
+export function Grid(props: H.GridProps & ReactBaseProps): any {
+  const vw = useViewport()
+  const node = H.Grid({ viewportWidth: props.viewportWidth ?? vw, ...props })
   return renderNodeToReact(node)
 }
 
-export function Container(props: H.ContainerProps & { children?: any; tag?: any; [key: string]: any }): any {
-  const node = H.Container(props)
+export function Container(props: H.ContainerProps & ReactBaseProps): any {
+  const vw = useViewport()
+  const node = H.Container({ viewportWidth: props.viewportWidth ?? vw, ...props })
   return renderNodeToReact(node)
 }
 
-export function Spacer(props: { size?: any; [key: string]: any }): any {
+export function Spacer(props: { size?: any } & ReactBaseProps): any {
   const node = H.Spacer(props)
   return renderNodeToReact(node)
 }
 
-export function Center(props: any): any {
+export function Center(props: ReactBaseProps): any {
   const node = H.Center(props)
   return renderNodeToReact(node)
 }
@@ -352,9 +232,15 @@ export function SplitLayout(props: H.SplitLayoutContract) {
   return renderNodeToReact(node)
 }
 
-export function DashboardLayout(props: H.DashboardLayoutProps) {
+export interface ReactDashboardLayoutProps extends Omit<H.DashboardLayoutProps, "header" | "sidebar" | "children"> {
+  header?: any
+  sidebar?: any
+  children?: any
+}
+
+export function DashboardLayout(props: ReactDashboardLayoutProps) {
   const vw = useViewport()
-  const node = H.DashboardLayout({ viewportWidth: props?.viewportWidth ?? vw, ...props })
+  const node = H.DashboardLayout({ viewportWidth: props?.viewportWidth ?? vw, ...props } as any)
   return renderNodeToReact(node)
 }
 

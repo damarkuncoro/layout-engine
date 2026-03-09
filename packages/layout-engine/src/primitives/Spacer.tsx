@@ -1,23 +1,31 @@
 import { normalizeUnit } from "../core/styleResolver.js"
-import type { LayoutProps, CSSLength } from "../system/types.js"
+import { resolveResponsive } from "../core/responsiveSystem.js"
+import type { LayoutProps, CSSLength, ResponsiveValue } from "../system/types.js"
 export interface SpacerProps extends LayoutProps {
-  size?: CSSLength
-  axis?: "x" | "y"
+  size?: ResponsiveValue<CSSLength>
+  axis?: ResponsiveValue<"x" | "y">
 }
 export function Spacer({
   size = 8,
   axis = "y",
+  tag = "div",
   style,
+  viewportWidth = 1024,
   ...rest
-}: SpacerProps & { children?: any }) {
+}: SpacerProps & { children?: any; [key: string]: any }) {
+  const resolvedAxis = resolveResponsive(axis, viewportWidth)
+  const resolvedSize = normalizeUnit(resolveResponsive(size as any, viewportWidth))
+  const resolvedWidth = normalizeUnit(resolveResponsive(rest.width as any, viewportWidth))
+  const resolvedHeight = normalizeUnit(resolveResponsive(rest.height as any, viewportWidth))
+
   const resolved: Record<string, any> = {
-    width: axis === "x" ? normalizeUnit(size) : normalizeUnit(rest.width) ?? "100%",
-    height: axis === "y" ? normalizeUnit(size) : normalizeUnit(rest.height) ?? "100%",
+    width: resolvedAxis === "x" ? resolvedSize : resolvedWidth ?? "100%",
+    height: resolvedAxis === "y" ? resolvedSize : resolvedHeight ?? "100%",
     display: "block",
     ...style
   }
   return {
-    type: "div",
+    type: tag,
     props: {
       style: resolved,
       ...rest

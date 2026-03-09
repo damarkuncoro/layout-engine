@@ -7,7 +7,7 @@ import { motion } from 'motion/react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
-import { cn } from './lib/utils';
+import { cn } from './utils/cn';
 import { SidebarPreview } from './components/SidebarPreview';
 import { EditorSidebar } from './components/EditorSidebar';
 import { PreviewHeader } from './components/PreviewHeader';
@@ -17,6 +17,10 @@ import { generateLayoutEngineCode, generateTailwindCode } from './utils/codeGene
 export default function App() {
   const {
     config,
+    isDark,
+    isBrutalist,
+    isGlass,
+    isFloating,
     updateConfig,
     addGroup,
     addItemToGroup,
@@ -143,7 +147,15 @@ export default function App() {
               </div>
             </motion.div>
           ) : (
-            <SidebarPreview config={config} viewport={viewport} showContent={showContent} />
+            <SidebarPreview 
+              config={config} 
+              viewport={viewport} 
+              showContent={showContent} 
+              isDark={isDark}
+              isBrutalist={isBrutalist}
+              isGlass={isGlass}
+              isFloating={isFloating}
+            />
           )}
         </div>
       </main>

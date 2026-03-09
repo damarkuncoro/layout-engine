@@ -3,9 +3,9 @@ import { normalizeUnit } from "../core/styleResolver.js"
 import { resolveResponsive } from "../core/responsiveSystem.js"
 
 export interface GridProps extends LayoutProps {
-  columns?: number | string | ResponsiveValue<number>
-  rows?: number | string
-  gap?: CSSLength | ResponsiveValue<CSSLength>
+  columns?: ResponsiveValue<number | string>
+  rows?: ResponsiveValue<number | string>
+  gap?: ResponsiveValue<CSSLength>
   viewportWidth?: number
 }
 
@@ -24,33 +24,33 @@ export function Grid({
   width,
   height,
   display,
+  className,
+  id,
+  tag = "div",
   style,
   viewportWidth = 1024,
   ...rest
-}: GridProps & { children?: any }) {
-  const resolvedColumns = typeof columns === "object"
-    ? resolveResponsive(columns as ResponsiveValue<number>, viewportWidth)
-    : toTemplate(columns)
-  
-  const resolvedGap = typeof gap === "object"
-    ? normalizeUnit(resolveResponsive(gap as ResponsiveValue<CSSLength>, viewportWidth))
-    : normalizeUnit(gap as any)
+}: GridProps & { children?: any; [key: string]: any }) {
+  const resolvedColumns = toTemplate(resolveResponsive(columns as any, viewportWidth))
+  const resolvedGap = normalizeUnit(resolveResponsive(gap as any, viewportWidth))
 
   const resolved: Record<string, any> = {
-    padding: normalizeUnit(padding),
-    margin: normalizeUnit(margin),
-    width: normalizeUnit(width),
-    height: normalizeUnit(height),
-    display: display ?? "grid",
+    padding: normalizeUnit(resolveResponsive(padding, viewportWidth)),
+    margin: normalizeUnit(resolveResponsive(margin, viewportWidth)),
+    width: normalizeUnit(resolveResponsive(width, viewportWidth)),
+    height: normalizeUnit(resolveResponsive(height, viewportWidth)),
+    display: resolveResponsive(display, viewportWidth) ?? "grid",
     gridTemplateColumns: resolvedColumns,
-    gridTemplateRows: toTemplate(rows),
+    gridTemplateRows: toTemplate(resolveResponsive(rows as any, viewportWidth)),
     gap: resolvedGap,
     ...style
   }
   return {
-    type: "div",
+    type: tag,
     props: {
       style: resolved,
+      className,
+      id,
       ...rest,
       children
     }

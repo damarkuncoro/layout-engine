@@ -9,7 +9,7 @@ import {
   PanelLeft
 } from 'lucide-react';
 import { SidebarConfig, SidebarStyle, DEFAULT_CONFIG, PRESETS } from '../types';
-import { cn } from '../lib/utils';
+import { cn } from '../utils/cn';
 
 interface EditorSidebarProps {
   config: SidebarConfig;

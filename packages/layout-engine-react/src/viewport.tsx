@@ -12,9 +12,21 @@ export function BreakpointsProvider(props: { initialWidth?: number; breakpoints?
   )
   React.useEffect(() => {
     if (props.initialWidth != null) return
-    const onResize = () => setWidth(window.innerWidth)
+    
+    let timeoutId: any = null
+    const onResize = () => {
+      if (timeoutId) return
+      timeoutId = setTimeout(() => {
+        setWidth(window.innerWidth)
+        timeoutId = null
+      }, 100)
+    }
+
     window.addEventListener("resize", onResize)
-    return () => window.removeEventListener("resize", onResize)
+    return () => {
+      window.removeEventListener("resize", onResize)
+      if (timeoutId) clearTimeout(timeoutId)
+    }
   }, [props.initialWidth])
   const value = React.useMemo(
     () => ({ width, breakpoints: props.breakpoints ?? defaultBps }),

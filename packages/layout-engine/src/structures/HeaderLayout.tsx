@@ -1,9 +1,13 @@
 import { Flex } from "../primitives/Flex.js"
 import { Box } from "../primitives/Box.js"
 import type { HeaderLayoutContract } from "../system/contracts.js"
+import type { ResponsiveValue, CSSLength } from "../system/types.js"
+import { resolveResponsive } from "../core/responsiveSystem.js"
+import { normalizeUnit } from "../core/styleResolver.js"
 
 export interface HeaderLayoutProps extends HeaderLayoutContract {
-  headerHeight?: string | number
+  headerHeight?: ResponsiveValue<CSSLength>
+  viewportWidth?: number
 }
 
 /**
@@ -12,17 +16,25 @@ export interface HeaderLayoutProps extends HeaderLayoutContract {
 export function HeaderLayout({
   header,
   children,
-  headerHeight = 64
+  headerHeight = 64,
+  viewportWidth = 1024
 }: HeaderLayoutProps) {
+  const resolvedHeaderHeight = normalizeUnit(resolveResponsive(headerHeight, viewportWidth) ?? 64)
+
   return Flex({
+    viewportWidth,
     direction: "column",
     children: [
       Box({ 
-        height: headerHeight, 
+        viewportWidth,
+        tag: "header",
+        height: resolvedHeaderHeight, 
         style: { position: "sticky", top: 0, zIndex: 10 },
         children: header 
       }),
       Box({
+        viewportWidth,
+        tag: "main",
         style: { flex: 1 },
         children
       })

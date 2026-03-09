@@ -28,23 +28,33 @@ export interface SidebarProps {
   padding?: CSSLength
   style?: Record<string, any>
   children?: any
+  viewportWidth?: number
 }
 
 // Sub-component contracts
 export interface SidebarHeaderProps {
   children: any
   style?: Record<string, any>
+  viewportWidth?: number
 }
 
 export interface SidebarFooterProps {
   children: any
   style?: Record<string, any>
+  viewportWidth?: number
+}
+
+export interface SidebarContentProps {
+  children: any
+  style?: Record<string, any>
+  viewportWidth?: number
 }
 
 export interface SidebarGroupProps {
   title?: string
   children: any
   style?: Record<string, any>
+  viewportWidth?: number
 }
 
 export interface SidebarItemProps {
@@ -56,4 +66,5 @@ export interface SidebarItemProps {
   href?: string
   collapsed?: boolean
   style?: Record<string, any>
+  viewportWidth?: number
 }

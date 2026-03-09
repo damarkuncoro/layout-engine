@@ -24,7 +24,7 @@ export const resolveResponsive = <T>(
   value: ResponsiveValue<T> | undefined,
   width: number
 ): T | undefined => {
-  if (value === undefined) return undefined
+  if (value === undefined || value === null) return value as any
   if (!Array.isArray(value) && typeof value !== "object") return value as T
 
   const order: Array<{ key?: BreakpointKey; min: number }> = [
@@ -57,4 +57,41 @@ export const resolveResponsive = <T>(
     }
   }
   return resolved
+}
+
+/**
+ * Generates a style object with CSS variables for responsive values.
+ * This allows the browser to handle responsiveness via media queries if the renderer supports it,
+ * or at least reduces the number of re-renders by centralizing the values.
+ */
+export const getResponsiveStyles = (
+  property: string,
+  value: ResponsiveValue<any> | undefined,
+  prefix: string = "le"
+): { styles: Record<string, string>; variableName: string } => {
+  if (value === undefined) return { styles: {}, variableName: "" }
+  
+  const varName = `--${prefix}-${property}`
+  const styles: Record<string, string> = {}
+
+  if (!Array.isArray(value) && typeof value !== "object") {
+    styles[varName] = String(value)
+    return { styles, variableName: varName }
+  }
+
+  if (Array.isArray(value)) {
+    const keys: Array<string | undefined> = ["base", "sm", "md", "lg", "xl", "2xl"]
+    value.forEach((v, i) => {
+      if (v !== undefined && keys[i]) {
+        styles[`${varName}-${keys[i]}`] = String(v)
+      }
+    })
+  } else {
+    const obj = value as Record<string, any>
+    Object.entries(obj).forEach(([key, v]) => {
+      styles[`${varName}-${key}`] = String(v)
+    })
+  }
+
+  return { styles, variableName: `var(${varName}-base, var(${varName}))` }
 }

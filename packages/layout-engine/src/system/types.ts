@@ -23,13 +23,18 @@ export type ResponsiveValue<T> =
  * Hanya properti yang dipetakan ke style inline.
  */
 export interface LayoutProps {
-  padding?: CSSLength
-  margin?: CSSLength
-  width?: CSSLength
-  height?: CSSLength
-  display?: string
+  padding?: ResponsiveValue<CSSLength>
+  margin?: ResponsiveValue<CSSLength>
+  width?: ResponsiveValue<CSSLength>
+  height?: ResponsiveValue<CSSLength>
+  display?: ResponsiveValue<string>
+  viewportWidth?: number
   tag?: string
-  style?: Record<string, any>
+  className?: string
+  id?: string
+  position?: "static" | "relative" | "absolute" | "fixed" | "sticky"
+  zIndex?: number | string
+  style?: any
   [key: string]: any
 }
 
@@ -39,7 +44,7 @@ export interface LayoutProps {
 export interface HeadlessNode {
   type: string
   props: {
-    style?: Record<string, any>
+    style?: any
     children?: any
     [key: string]: any
   }
