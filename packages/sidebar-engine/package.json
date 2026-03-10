@@ -1,6 +1,6 @@
 {
   "name": "@damarkuncoro/sidebar-engine",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Headless sidebar engine with composition patterns",
   "license": "MIT",
   "type": "module",

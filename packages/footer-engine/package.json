@@ -1,6 +1,6 @@
 {
   "name": "@damarkuncoro/footer-engine",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Headless footer engine with slots and layout patterns",
   "license": "MIT",
   "type": "module",

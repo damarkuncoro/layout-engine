@@ -1,6 +1,6 @@
 {
   "name": "@damarkuncoro/features-engine",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Headless features section engine with multiple display patterns",
   "license": "MIT",
   "type": "module",
