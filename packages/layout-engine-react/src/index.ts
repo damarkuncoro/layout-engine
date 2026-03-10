@@ -62,6 +62,38 @@ export function NavbarAutoVW(props: N.NavbarProps & { viewportWidth?: number }) 
   return renderNodeToReact(node)
 }
 
+// Presets
+export function NavbarTransparentSolidAutoVW(props: N.NavbarProps) {
+  const vw = useViewport()
+  const node = (N as any).NavbarTransparentSolid({ viewportWidth: props.viewportWidth ?? vw, ...props })
+  return renderNodeToReact(node)
+}
+export function NavbarTransparentSolidAutoWithOutsideClose(props: N.NavbarProps) {
+  const vw = useViewport()
+  const node = (N as any).NavbarTransparentSolidWithOutsideClose({ viewportWidth: props.viewportWidth ?? vw, ...props })
+  return renderNodeToReact(node)
+}
+export function NavbarTopStickyLightAutoVW(props: N.NavbarProps) {
+  const vw = useViewport()
+  const node = (N as any).NavbarTopStickyLight({ viewportWidth: props.viewportWidth ?? vw, ...props })
+  return renderNodeToReact(node)
+}
+export function NavbarCenteredBrandAutoVW(props: N.NavbarProps) {
+  const vw = useViewport()
+  const node = (N as any).NavbarCenteredBrand({ viewportWidth: props.viewportWidth ?? vw, ...props })
+  return renderNodeToReact(node)
+}
+export function NavbarUnderlineOnlyAutoVW(props: N.NavbarProps) {
+  const vw = useViewport()
+  const node = (N as any).NavbarUnderlineOnly({ viewportWidth: props.viewportWidth ?? vw, ...props })
+  return renderNodeToReact(node)
+}
+export function NavbarGlassBlurAutoVW(props: N.NavbarProps) {
+  const vw = useViewport()
+  const node = (N as any).NavbarGlassBlur({ viewportWidth: props.viewportWidth ?? vw, ...props })
+  return renderNodeToReact(node)
+}
+
 export type {
   CSSLength,
   LayoutProps,
